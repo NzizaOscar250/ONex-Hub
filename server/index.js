@@ -3,6 +3,9 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import authroutes from "./routes/auth.routes.js"
+import userRoutes from "./routes/user.routes.js"
+import courseRoutes from "./routes/course.routes.js"
 
 dotenv.config()
 
@@ -15,12 +18,11 @@ app.use(bodyParser.json({extended:true}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors())
 
-app.use("auth/",)
-app.use("user/",)
-mongoose.connect(url,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-}).then(()=>{
+app.use("auth/",authroutes)
+app.use("user/",userRoutes)
+app.use("courses",courseRoutes)
+
+mongoose.connect(url).then(()=>{
     app.listen(PORT,()=>console.log(`server started at: https:\\localhost:${PORT}`))
 }).catch((e)=>console.log("error: ",e.message))
 

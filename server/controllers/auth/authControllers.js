@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import UserModel from "../../models/Users.model.js"
 import dotenv from "dotenv"
 dotenv.config();
-const secret=process.env.SECRET;
+const secret=process.env.AUTH_SECRET_KEY;
 
 export const allUsers=async(req,res)=>{
     const data=await UserModel.find();
@@ -24,11 +23,10 @@ export const signin=async(req,res)=>{
 
 
         res.cookie('remember_me', token, { expire: new Date() + 9999 })
-        res.status(200).json({token,user:{
+        res.status(200).json({success:"userfound",token,user:{
             _id:userExist._id,
             username:userExist.username,
             email:userExist.email,
-            educator:userExist.educator
 
         }})
 
@@ -49,7 +47,7 @@ export const signout = (req,res)=>{
 export const empSignup=async(req,res)=>{
 
     try{
-        const {username,email,password}=req.body;
+        const {username,fname,lname,email,password}=req.body;
         //check if user alreasdy exist
 
         const userExist=await UserModel.findOne({email});
@@ -59,6 +57,8 @@ export const empSignup=async(req,res)=>{
         // const hashedPass=await bcrypt.hash(password,10);
        
         const result=await UserModel.create({
+            firstname:fname,
+            lastname:lname,
             username:username,
             password:password,
             email:email
@@ -68,11 +68,11 @@ export const empSignup=async(req,res)=>{
         const token = jwt.sign({_id:result._id,email:result.email},
             secret,{expiresIn:'24h' })
 
-            res.status(200).json({token,user:{
+            res.status(200).json({success:"user signed up",token,user:{
                 _id:result._id,
                 username:result.username,
                 email:result.email,
-                educator:result.educator
+                educator:false
     
             }})
 
