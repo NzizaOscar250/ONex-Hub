@@ -21,13 +21,16 @@ import Enrollment from "./views/enrollment/Enrollment"
 import ProtectedRoute from "./auth/ProtectedRoute"
 
 
-function App() {
+
+
+function MainRouter() {
+
 const router = createBrowserRouter(
   createRoutesFromElements(<>
 
   <Route path="/" element={
-              // <ProtectedRoute user={{username:'oscar250'}}>
-               <ProtectedRoute user={null}> 
+              <ProtectedRoute user={{username:'oscar250'}}>
+              {/* <ProtectedRoute user={null}> */}
                   <RootLayout/>
                </ProtectedRoute> 
          }>
@@ -70,4 +73,4 @@ const router = createBrowserRouter(
   )
 }
 
-export default App
+export default MainRouter

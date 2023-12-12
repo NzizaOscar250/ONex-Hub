@@ -13,19 +13,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      Copyright © 
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>
-      
-     
+   All right reserved    {'Copyright © '} by 
+      <Link color="inherit" href="" sx={{px:0.5}}>
+         OsDev
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
     </Typography>
   );
 }
-
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
@@ -114,10 +114,10 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-             
+              color="secondary"
            
             >
-             <Link href="/"> Sign Up</Link>
+             Sign Up
 
             </Button>
             <Grid container justifyContent="flex-end">

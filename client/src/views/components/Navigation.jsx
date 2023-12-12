@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
+
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import {  NavLink,useNavigate,Link } from 'react-router-dom';
+import {  NavLink,useNavigate } from 'react-router-dom';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import {map} from "lodash"
@@ -28,7 +28,7 @@ styles:{display:'flex',alignItems:'center',gap:1}},
 {name:'Signin',to:"/auth"},{name:'Signup',to:"/auth/signup"}];
 
 function Navigation(props) {
-  const { window } = props;
+  const { window: Window } = props;
  
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -47,7 +47,14 @@ function Navigation(props) {
 
   React.useEffect(()=>{
         handleClose()
+        window.scrollTo({
+          top:0,
+          left:0,
+          behavior: 'smooth'
+         })
     },[navigate])
+
+    
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -67,7 +74,7 @@ function Navigation(props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = Window !== undefined ? () => Window().document.body : undefined;
   const theme = useTheme()
 
   const matchs = useMediaQuery(theme.breakpoints.up("md"))

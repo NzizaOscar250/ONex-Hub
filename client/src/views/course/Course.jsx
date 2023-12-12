@@ -1,6 +1,6 @@
 
-import { AddBoxOutlined, AddBusiness,Delete, Edit, Save,} from "@mui/icons-material"
-import {  Button,Paper, Stack, Typography, CssBaseline, List, ListItem, ListItemAvatar, 
+import { AddBoxOutlined, AddBusiness,ArrowDownward,ArrowUpward,Delete, Edit, Save,} from "@mui/icons-material"
+import {  Button,Paper, Typography, CssBaseline, List, ListItem, ListItemAvatar, 
  ListItemText, Divider, Card, CardHeader, IconButton, Avatar, Dialog, 
  DialogTitle,
  DialogActions, DialogContent,
@@ -31,8 +31,9 @@ const dumy = [{title:"Node.js Intro",desc:'Lorem ipsum dolor sit amet consectetu
 const Course = () => {
 
   const theme = useTheme();
-  const matchs = useMediaQuery(theme.breakpoints.down('sm'))
+  const matchs = useMediaQuery(theme.breakpoints.down('md'))
    const [open,setOpen] = useState()
+   const [edit,setEdit] = useState(false)
 
    const onShowConfirm = () => {
     setOpen(true);
@@ -41,6 +42,9 @@ const Course = () => {
     setOpen(false);
     };
 
+    const openEdit = ()=>{
+        setEdit((prev)=>!prev)
+    }
   return (
 
    <>
@@ -85,16 +89,16 @@ const Course = () => {
                 </>
             }
             />
-        <ListItem sx={{alignItems:'start'}}>
+        <ListItem sx={{alignItems:'start',display:matchs?'block':'flex'}}>
             <ListItemAvatar sx={{paddingInlineEnd:4}}>
                 {/* <Avatar src={code} /> */}
-                <img src={code} alt="cool" style={{borderRadius:0,width:300,
-                    height:200,objectFit:'cover'}}/>
+                <img src={code} alt="cool" style={{borderRadius:0,width:matchs?400:300,
+                    height:matchs?250:200,objectFit:'cover'}}/>
             </ListItemAvatar>
             <ListItemText primary={<Typography variant="h5" color="text.secondary">Node js</Typography>}
                           secondary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta,
                            quod! Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, quod!"/>
-            <ListItemSecondaryAction>
+            <ListItemSecondaryAction sx={{display:matchs?'none':'flex'}}>
                 <Button variant="outlined">Enroll</Button>
             </ListItemSecondaryAction>
           </ListItem>
@@ -109,7 +113,11 @@ const Course = () => {
              <Typography variant="h5" color="secondary">Lessons</Typography>
             </>}
             subheader={
+                <>
                 <Typography variant="body2" color="text.secondary">5 Lessons</Typography>
+                <Button startIcon={<Edit/>} sx={{mt:3}} onClick={openEdit}>Edit and Re-arrange</Button>
+         
+                </>
             }
             action={
                 <>
@@ -122,22 +130,31 @@ const Course = () => {
                 </>
             }/>
 
-      <List sx={{paddingBlockStart:10}}>
+      <List sx={{paddingBlockStart:5}}>
        {
         map(dumy,(value,index)=>(
-          <Link to="/learn/enrollmentId" key={index}>
-          <ListItem >
+         <>
+          <ListItem sx={{display:matchs?'block':'flex',}} key={index}>
             <ListItemAvatar sx={{paddingInlineEnd:4}}>
                 {/* <Avatar src={code} /> */}
              <Avatar>{index+1}</Avatar>
             </ListItemAvatar>
-            <ListItemText primary={<Typography variant="h6">{value.title}</Typography>}
+            <ListItemText primary={ <Link to="/learn/enrollmentId"><Typography variant="h6">{value.title}</Typography></Link>}
                           secondary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta,
                            quod! Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, quod!"/>
-                       
+
+                   {
+                    edit && <ListItemSecondaryAction component="div" sx={{display:matchs?'flex':'block',justifyContent:'end', position:matchs&&'relative'}}>
+                                   <IconButton><Edit/></IconButton>
+                                    <IconButton><ArrowUpward/></IconButton>
+                                    <IconButton><ArrowDownward/></IconButton>
+                                    <IconButton><Delete/></IconButton>
+                            </ListItemSecondaryAction>
+                   }    
           </ListItem>
+          
           <Divider variant="inset" component="li"/> 
-          </Link>
+          </>
 
         ))
        }
