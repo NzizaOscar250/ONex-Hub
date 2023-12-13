@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import UserModel from "../../models/Users.model.js"
 import dotenv from "dotenv"
+
+
 dotenv.config();
+
+
 const secret=process.env.AUTH_SECRET_KEY;
 
 export const allUsers=async(req,res)=>{
@@ -14,8 +18,9 @@ export const signin=async(req,res)=>{
     const data=req.body;
     try {
         //check if user is available
+        // return res.json(data)
         const userExist = await UserModel.findOne({email:data.email})
-        if(!userExist) res.status(401).json({error:'Email Not Found!'})
+        if(!userExist) return res.status(401).json({error:'Email Not Found!'})
 
         if(!userExist.authenticate(data.password)) res.status(401).json({error: 'Incorrect Password'})
 
@@ -23,7 +28,7 @@ export const signin=async(req,res)=>{
 
 
         res.cookie('remember_me', token, { expire: new Date() + 9999 })
-        res.status(200).json({success:"userfound",token,user:{
+     return   res.status(200).json({success:"userfound",token,user:{
             _id:userExist._id,
             username:userExist.username,
             email:userExist.email,
@@ -31,7 +36,7 @@ export const signin=async(req,res)=>{
         }})
 
     } catch (error) {
-        console.log(error.message)
+        return res.status({error:error.message})
     }
 
 }
@@ -45,10 +50,16 @@ export const signout = (req,res)=>{
 }
 
 export const empSignup=async(req,res)=>{
+    // # Authorization: token xxx
 
     try{
         const {username,fname,lname,email,password}=req.body;
         //check if user alreasdy exist
+              console.log(req.body.email)
+
+              const validate = username == undefined || fname == undefined || lname == undefined || email == undefined || password == undefined
+ 
+               if(validate) return res.json({error:'all field are required'})
 
         const userExist=await UserModel.findOne({email});
         if(userExist) res.status(403).send("Email already taken...!");

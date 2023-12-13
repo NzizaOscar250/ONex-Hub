@@ -7,7 +7,7 @@ export const createCourse = async(req,res)=>{
     try {
          const {name,image,description} = req.body 
          const instructor = req.profile._id
-
+          console.log(req.body)
          if(!mongoose.isValidObjectId(instructor)) return res.status(404).json({error:'Invalid Educator'})
 
          const newCourse = await CourseModel.create({
@@ -76,15 +76,11 @@ export const getPublishedCourses = async(req,res)=>{
 
 export const updateCourse = async(req,res)=>{
     try {
-        const {name,image,description} = req.body 
-
+    
          if(!mongoose.isValidObjectId(req.course._id)) return res.status(404).json({error:'Invalid Educator'})
 
          const result = await CourseModel.findByIdAndUpdate(req.course._id,{
-                name:name,
-                description:description,
-                image:image,
-               
+                ...req.body
          })
 
          return res.json(result)
@@ -113,9 +109,9 @@ export const removeCourse = async(req,res)=>{
 
 export const createLesson = async(req,res)=>{
     try {
-            const lesson = req.body.lesson
+            const lesson = req.body
             let result = await CourseModel.findByIdAndUpdate(req.course._id,{
-                $push:{lessons:lesson}
+                $push:{lessons:{title:lesson.title,content:lesson.content,resourse_url:lesson.resourse_url}}
             },{new:true}).populate('instructor','_id username firstname lastname').exec()
 
 

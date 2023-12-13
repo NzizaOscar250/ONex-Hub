@@ -65,8 +65,11 @@ export const updateUser = async(req,res)=>{
 
     // user.updated = Date.now()
     const newUpdate = {...req.body,
+        firstname:req.body.fname,
+        lastname:req.body.lname,
         profile:req.body.profile,
         about:req.body.about,
+        educator:req.body.educator,
         updatedAt:Date.now}
 
         
