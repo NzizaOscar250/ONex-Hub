@@ -41,7 +41,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhMGJiZDJhMTY4NTI5YWRiMjJjMWYiLCJlbWFpbCI6Im56aXphb3NjYXIyNUBnbWFpbC5jb20iLCJpYXQiOjE3MDI0OTcyMTQsImV4cCI6MTcwMjU4MzYxNH0.V5fP1tVQNxPDFn-S-pQXJMq1A5_ZAgK1iyy2ORfFfWw
 
 {
- "name":"Cloud Computing",
+ "name":"Testing",
  "description":"<p>Cloud Computing provides us a means by which we can access the applications as utilities, over the internet. It allows us to create, configure, and customize the business applications online.</p>",
  "image":"html5.png"
 }
@@ -61,20 +61,39 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhMGJiZ
 
 ###____________________ADDING lESSONS TO COURSE
 
-POST http://localhost:7000/courses/657a19f9bf8b799245f856ab/lesson/new HTTP/1.1
+POST http://localhost:7000/courses/657a24b8aec410e93f1eda34/lesson/new HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhMGJiZDJhMTY4NTI5YWRiMjJjMWYiLCJlbWFpbCI6Im56aXphb3NjYXIyNUBnbWFpbC5jb20iLCJpYXQiOjE3MDI0OTcyMTQsImV4cCI6MTcwMjU4MzYxNH0.V5fP1tVQNxPDFn-S-pQXJMq1A5_ZAgK1iyy2ORfFfWw
 
 {
-"title":"Overview",
-"content":"<p>Cloud Computing provides us a means by which we can access the applications as utilities, over the Internet. It allows us to create, configure, and customize applications online.</p><h2>What is Cloud?</h2>"
-"resourse_url":"https://www.javatpoint.com",
+"title":"Technologies",
+"content":"<h2>Virtualization</h2><p><b>Virtualization</b> is a technique which allows to share single physical instance of an application or resource among multiple organizations or tenants(customers). It does so by assigning a logical name to a physical resource and providing a pointer to that physical resource when demanded.</p>",
+"resourse_url":"https://www.javatpoint.com"
 }
 
+### ________________UPDATE COURSE___________________
 
 
+PUT http://localhost:7000/courses/657a19f9bf8b799245f856ab HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhMGJiZDJhMTY4NTI5YWRiMjJjMWYiLCJlbWFpbCI6Im56aXphb3NjYXIyNUBnbWFpbC5jb20iLCJpYXQiOjE3MDI0OTcyMTQsImV4cCI6MTcwMjU4MzYxNH0.V5fP1tVQNxPDFn-S-pQXJMq1A5_ZAgK1iyy2ORfFfWw
+
+{
+  "name": "Cloud Computing",
+  "published":true
+  
+}
+
+### ________________DELETE COURSE_______________
+DELETE  http://localhost:7000/courses/657a24b8aec410e93f1eda34 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhMGJiZDJhMTY4NTI5YWRiMjJjMWYiLCJlbWFpbCI6Im56aXphb3NjYXIyNUBnbWFpbC5jb20iLCJpYXQiOjE3MDI0OTcyMTQsImV4cCI6MTcwMjU4MzYxNH0.V5fP1tVQNxPDFn-S-pQXJMq1A5_ZAgK1iyy2ORfFfWw
 
 
+###_________________PUBLISHED__COURSE_____________
+
+
+GET http://localhost:7000/courses/published HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTdhMGJiZDJhMTY4NTI5YWRiMjJjMWYiLCJlbWFpbCI6Im56aXphb3NjYXIyNUBnbWFpbC5jb20iLCJpYXQiOjE3MDI0OTcyMTQsImV4cCI6MTcwMjU4MzYxNH0.V5fP1tVQNxPDFn-S-pQXJMq1A5_ZAgK1iyy2ORfFfWw
 
 
 
