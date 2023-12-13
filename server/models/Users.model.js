@@ -61,6 +61,9 @@ userSchema.methods = {
         } catch (error) {
             console.log("schema error: ",error.message)
         }
+    },
+    makeSalt:function(){
+        return Math.round((new Date().valueOf() * Math.random())) + ''
     }
 }
 
