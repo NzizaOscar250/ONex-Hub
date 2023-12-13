@@ -18,9 +18,10 @@ app.use(bodyParser.json({extended:true}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors())
 
-app.use("auth/",authroutes)
-app.use("user/",userRoutes)
-app.use("courses",courseRoutes)
+app.use("/auth/",authroutes)
+app.use("/user/",userRoutes)
+app.use("/courses/",courseRoutes)
+// app.use("/",(req,res)=>res.json({message:'working'}))
 
 mongoose.connect(url).then(()=>{
     app.listen(PORT,()=>console.log(`server started at: https:\\localhost:${PORT}`))
