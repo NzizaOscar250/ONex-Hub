@@ -29,7 +29,7 @@ const courseSchema = new mongoose.Schema({
     },
     instructor:{
         type:mongoose.Schema.ObjectId,
-        ref:'User'
+        ref:'Users'
     },
     lessons:[lessonSchema]
 },{timestamps:true})
