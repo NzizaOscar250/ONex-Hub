@@ -12,7 +12,7 @@ const courseRoutes = express.Router();
 
 courseRoutes.post('/by/:userId',isAuthorized,isEducator,createCourse)
             .get('/by/:userId',isAuthorized,isEducator,getCourseByInstructor)
-            .get("/:courseId",isAuthorized,getCourse)
+            .get("/a/:courseId",isAuthorized,getCourse)
             .post("/:courseId/lesson/new",isAuthorized,isInstructor,createLesson)
             .put("/:courseId",isAuthorized,isInstructor,updateCourse)
             .delete("/:courseId",isAuthorized,isInstructor,removeCourse)
