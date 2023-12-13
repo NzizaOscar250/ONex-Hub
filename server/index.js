@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import authroutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import courseRoutes from "./routes/course.routes.js"
+import enrollRoutes from "./routes/enroll.routes.js"
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.use(cors())
 app.use("/auth/",authroutes)
 app.use("/user/",userRoutes)
 app.use("/courses/",courseRoutes)
+app.use("/enrollment/",enrollRoutes)
 // app.use("/",(req,res)=>res.json({message:'working'}))
 
 mongoose.connect(url).then(()=>{

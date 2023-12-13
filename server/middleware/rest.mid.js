@@ -17,4 +17,12 @@ export const isInstructor = (req,res,next)=>{
     next()
 }
 
+export const isStudent = (req,res,next)=>{
+   const isStudent = req.userId && req.userId== req.enrollment.student._id
+   if(!isStudent) return res.status(403).json({error:"User is not Enrolled"})
+
+   next()
+}
+
+
 
