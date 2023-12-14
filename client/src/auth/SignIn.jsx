@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -17,7 +17,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
    All right reserved    {'Copyright © '} by 
-      <Link color="inherit" href="" sx={{px:0.5}}>
+      <Link color="inherit" to="/" sx={{px:0.5}}>
          OsDev
       </Link>{' '}
       {new Date().getFullYear()}
@@ -88,8 +88,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              component={Link}
-              to="/"
+              
             >
               Sign In
             </Button>
@@ -100,7 +99,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="auth/signup" variant="body2">
+                <Link to="auth/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

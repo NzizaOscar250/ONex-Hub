@@ -82,10 +82,10 @@ const Enrollment = () => {
                     <Card component="div" sx={{minHeight:500,width:'100%'}} elevation={0}>
                         <CardHeader title={data?.title}
                             action={
-                                <>
+                                
                                 data?.completed ? <Button variant="contained" color="secondary">Completed</Button> : <Button variant="outlined">Mark as complete</Button>
                                 
-                                </>
+                                
                             }
                         />
                         <CardContent>

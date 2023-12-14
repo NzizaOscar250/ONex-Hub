@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import {  NavLink,useNavigate } from 'react-router-dom';
+import {  NavLink,useNavigate ,Link} from 'react-router-dom';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import {map} from "lodash"
@@ -58,9 +58,9 @@ function Navigation(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        StarClassRoom
-      </Typography>
+      <Link to="/" sx={{ my: 2,textDecoration:'none',color:"#555" }}>
+        ONeXHub
+      </Link>
       <Divider />
       <List>
         {map(navItems, (item) => (
@@ -100,8 +100,9 @@ function Navigation(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' },alignItems:'center',gap:2, }}
           >
-            StarClassRoom
+            <Link to="/" style={{color:"#fff",display:'flex' ,alignItems:'center',gap:8,fontSize:22}}>ONeXHub
             <LocalLibraryRoundedIcon/>
+            </Link>
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'flex' },gap:3,alignItems:'center' }}>
 

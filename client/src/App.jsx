@@ -26,8 +26,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(<>
 
   <Route path="/" element={
-              // <ProtectedRoute user={{username:'oscar250'}}>
-               <ProtectedRoute user={null}> 
+              <ProtectedRoute user={{username:'oscar250'}}>
+               {/* <ProtectedRoute user={null}>  */}
                   <RootLayout/>
                </ProtectedRoute> 
          }>

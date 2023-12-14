@@ -71,7 +71,7 @@ const Course = () => {
             </DialogContent>
         </Dialog>
 
-   <Paper component="div" sx={{margin:'1em auto ',padding:4,minHeight:'100vh'}} elevation={0}>
+   <Paper component="div" sx={{margin:'auto ',padding:4,minHeight:'100vh'}} elevation={0}>
     <CssBaseline/>
 
 
