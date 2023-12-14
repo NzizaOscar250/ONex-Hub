@@ -5,14 +5,18 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import {useState} from "react"
+import {signIn} from "../actions/auth"
+import { useDispatch } from 'react-redux'
+import { fireNotify } from '../actions/notifications';
+import { useSelector } from 'react-redux';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,15 +34,21 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+
 export default function SignIn() {
+
+  const [data,setData] = useState({email:'',password:'',rememberme:false})
+  const dispatch = useDispatch()
+const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+     dispatch(signIn({...data},fireNotify("Authenticating...!"),navigate))
   };
+
+  const handleChange = (name)=>e=>{
+    setData({...data,[name]:e.target.value})
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -58,9 +68,10 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <form onSubmit={handleSubmit}  style={{ marginBlockStart: 1 }}>
             <TextField
               margin="normal"
+              type="email"
               required
               fullWidth
               id="email"
@@ -68,6 +79,9 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+
+              value={data.name}
+              onChange={handleChange('email')}
             />
             <TextField
               margin="normal"
@@ -76,11 +90,13 @@ export default function SignIn() {
               name="password"
               label="Password"
               type="password"
-              id="password"
+           
               autoComplete="current-password"
+              value={data.password}
+              onChange={handleChange('password')}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox   color="primary" onChange={handleChange('rememberme')} value={data.rememberme} />}
               label="Remember me"
             />
             <Button
@@ -88,23 +104,24 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              
+              type="submit"
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link to="" >
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link to="auth/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+              Don&apos;t have an account? 
+                <Link to="/auth/signup" >
+                  {"Sign Up"}
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </form>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

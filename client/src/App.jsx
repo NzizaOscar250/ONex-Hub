@@ -20,13 +20,15 @@ import NewLesson from "./views/course/NewLesson"
 import Enrollment from "./views/enrollment/Enrollment"
 import ProtectedRoute from "./auth/ProtectedRoute"
 
-
 function App() {
+
+
+
 const router = createBrowserRouter(
   createRoutesFromElements(<>
 
   <Route path="/" element={
-              <ProtectedRoute user={{username:'oscar250'}}>
+              <ProtectedRoute >
                {/* <ProtectedRoute user={null}>  */}
                   <RootLayout/>
                </ProtectedRoute> 

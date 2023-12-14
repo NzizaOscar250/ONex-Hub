@@ -20,16 +20,26 @@ import {map} from "lodash"
 import { Tooltip,Avatar, useTheme, useMediaQuery} from '@mui/material';
 import DropMenu from './DropMenu';
 import DrawerNav from './DrawerNav';
+import auth from "../../helper/auth.helper.js"
 
 const drawerWidth = 240;
-const navItems = [{name:'Home',to:"/"},
+let navItems = [{name:'Home',to:"/"},
 {name:'Teach',to:"courses",icon:<LocalLibrary sx={{fontSize:20}}/>,
-styles:{display:'flex',alignItems:'center',gap:1}},
-{name:'Signin',to:"/auth"},{name:'Signup',to:"/auth/signup"}];
+styles:{display:'flex',alignItems:'center',gap:1}}];
 
 function Navigation(props) {
-  const { window: Window } = props;
  
+  const isAuthorized = auth.isAuthenticated()
+
+ const updatedNavItems = isAuthorized
+    ? [...navItems]
+    : [
+        ...navItems,
+        { name: 'Signin', to: '/auth' },
+        { name: 'Signup', to: '/auth/signup' },
+      ];
+
+ const { window: Window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -107,7 +117,7 @@ function Navigation(props) {
           <Box sx={{ display: { xs: 'none', sm: 'flex' },gap:3,alignItems:'center' }}>
 
             {
-                map(navItems,(value)=><NavLink to={value.to} key={value.name} className="nav"><span> {value?.icon}</span> <span>{value.name}</span> </NavLink>)
+                map(updatedNavItems ,(value)=><NavLink to={value.to} key={value.name} className="nav"><span> {value?.icon}</span> <span>{value.name}</span> </NavLink>)
             }
            <Tooltip title="Account settings">
           <IconButton

@@ -3,9 +3,11 @@ import {MenuItem,Menu,ListItemIcon,Avatar,Divider} from '@mui/material';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import { Link, } from 'react-router-dom';
-const DropMenu = ({anchorEl,handleClose,open}) => {
+import auth from "../../helper/auth.helper.js"
+import { Link,  useNavigate, } from 'react-router-dom';
 
+const DropMenu = ({anchorEl,handleClose,open}) => {
+const navigate = useNavigate()
   return (
     <>
     <Menu
@@ -64,7 +66,10 @@ const DropMenu = ({anchorEl,handleClose,open}) => {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={()=>{
+           auth.clearJWT(()=>navigate("/auth"))
+          handleClose()
+          }}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
