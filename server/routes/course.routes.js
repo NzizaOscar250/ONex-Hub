@@ -17,6 +17,7 @@ courseRoutes.post('/by/:userId',isAuthorized,isEducator,createCourse)
             .put("/:courseId",isAuthorized,isInstructor,updateCourse)
             .delete("/:courseId",isAuthorized,isInstructor,removeCourse)
             .get("/published",isAuthorized,getPublishedCourses)
+    
 
 
 
