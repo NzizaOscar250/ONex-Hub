@@ -1,10 +1,11 @@
 import { ImageList,ImageListItem,ListSubheader, Typography } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {useTheme} from "@mui/material/styles"
+import {alpha, useTheme} from "@mui/material/styles"
 import code from "../assets/code.jpg"
 import technology from "../assets/technology.jpg"
 
 import CourseComponent from "./components/CourseComponent";
+import { blue, indigo } from "@mui/material/colors";
 const itemData = [
   {
     img: code,
@@ -52,7 +53,7 @@ const Enrollment = () => {
     <>
       <ImageList  sx={{background:'grey',p:0,m:0}} cols={matchDownMd? 2 : 5} >
         <ImageListItem key="subheader"  cols={matchDownMd? 2 : 5}>
-          <ListSubheader component="div" sx={{background:'#ddd',paddingBlock:2}}>
+          <ListSubheader component="div" sx={{background:blue[100],paddingBlock:2}}>
             <Typography variant="h6" sx={{color:'#555'}}>Courses You are Enrolled In</Typography>
           </ListSubheader>
         </ImageListItem>

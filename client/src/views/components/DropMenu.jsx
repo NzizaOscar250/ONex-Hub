@@ -1,12 +1,13 @@
 
-import {MenuItem,Menu,ListItemIcon,Avatar,Divider} from '@mui/material';
+import {MenuItem,Menu,ListItemIcon,Avatar,Divider, Typography} from '@mui/material';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import auth from "../../helper/auth.helper.js"
 import { Link,  useNavigate, } from 'react-router-dom';
-
-const DropMenu = ({anchorEl,handleClose,open}) => {
+import { Book, MenuBook, Person } from '@mui/icons-material';
+import { Error } from '../../actions/notifications.js';
+const DropMenu = ({anchorEl,handleClose,open,profile}) => {
 const navigate = useNavigate()
   return (
     <>
@@ -17,11 +18,11 @@ const navigate = useNavigate()
         onClose={handleClose}
         onClick={handleClose}
 
-        PaperProps={{
-          elevation: 0,
-          sx: {
+       
+          elevation={0} 
+          sx={{
             overflow: 'visible',
-            zIndex:1250,
+        
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
             '& .MuiAvatar-root': {
@@ -42,23 +43,29 @@ const navigate = useNavigate()
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
-          },
-        }}
+          }}
+
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
+      > 
+    
         <MenuItem >
-          <Avatar /> <Link to="/profile">Profile</Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
+        <ListItemIcon>
+            <Person fontSize="small" />
           </ListItemIcon>
-          Add another account
+         <Link to="/profile" style={{color:"#555"}}>My account</Link>
+        </MenuItem>
+        
+        <Divider />
+        <MenuItem onClick={()=>{
+          if(!auth.isEducator()) return Error("Update profile to be an educator")
+          handleClose()
+          navigate("/courses/new")
+          }}>
+           <ListItemIcon>
+            <MenuBook sx={{fontSize:20}}/>
+          </ListItemIcon>
+          Add course
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>

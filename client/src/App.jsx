@@ -18,8 +18,18 @@ import NotFound from "./helper/NotFound"
 import EditCourse from "./views/course/EditCourse"
 import NewLesson from "./views/course/NewLesson"
 import Enrollment from "./views/enrollment/Enrollment"
-import ProtectedRoute from "./auth/ProtectedRoute"
+import ProtectedRoute, { TeacherAccess } from "./auth/ProtectedRoute"
+import { Box, Toolbar, Typography } from "@mui/material"
 
+
+function CommingSoon(){
+  return (<Box>
+    <Toolbar/>
+    <Toolbar/>
+            <Typography variant="h3" color="text.secondary">COMING SOON...</Typography>
+  </Box>
+  )
+}
 function App() {
 
 
@@ -35,6 +45,7 @@ const router = createBrowserRouter(
          }>
 
         <Route index element={<Home/>}/>
+        <Route path="soon" element={<CommingSoon/>}/>
         <Route path="enrollement" element={<Enrollment/>}/>
         <Route path="learn/:enrollId" element={<Enrollment/>}/>
         <Route path="profile" element={<User/>}>
@@ -43,7 +54,11 @@ const router = createBrowserRouter(
         </Route>
         <Route path="trend" element={<Courses/>}/>
 {/* courses route */}
-            <Route path="courses" element={<Teach/>}>
+            <Route path="courses" element={
+                <TeacherAccess>
+                    <Teach/>
+                </TeacherAccess>
+                }>
                 <Route index element={<MyCourse/>}/>
                 <Route path="new" element={<NewCourse/>}/>
             <Route path="course/:courseId" element={<Teach/>}>

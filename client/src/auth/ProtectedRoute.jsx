@@ -10,5 +10,9 @@ const ProtectedRoute = ({children}) => {
   return children;
 }
 
+export const TeacherAccess =  ({children})=>{
+  if (!auth.isEducator ()) return <Navigate to="/profile/edit" replace/>
+  return children
+}
 
 export default ProtectedRoute

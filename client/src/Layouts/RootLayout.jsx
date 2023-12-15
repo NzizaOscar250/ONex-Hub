@@ -1,6 +1,7 @@
 import { Box ,Typography,Divider} from "@mui/material";
 import { Outlet,Link } from "react-router-dom";
 import Navigation from "../views/components/Navigation";
+import { ToastContainer } from "react-toastify";
 
 const RootLayout = ()=>{
 
@@ -19,6 +20,7 @@ return (
           }}
         >
           
+          <ToastContainer/>
             <Outlet/>
           
         </Box>

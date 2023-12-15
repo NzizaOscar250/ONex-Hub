@@ -23,4 +23,4 @@ API.interceptors.request.use((req)=>{
 
 export const SignIn = (formData)=> API.post('/auth/signin',formData)
 
-export const SignUp = (formData)=> API.post("a/uth/signup",formData)
+export const SignUp = (formData)=> API.post("auth/signup",formData)

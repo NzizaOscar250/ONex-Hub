@@ -10,6 +10,13 @@ const auth = {
     else
       return false
   },
+  isEducator(){
+    if (typeof window == "undefined")
+      return false
+    const dt = JSON.parse(sessionStorage.getItem('jwt'))
+     if (dt.user.educator) return true
+     return dt.user.educator;
+  },
   authenticate(jwt) {
     if (typeof window !== "undefined")
       sessionStorage.setItem('jwt', JSON.stringify(jwt))

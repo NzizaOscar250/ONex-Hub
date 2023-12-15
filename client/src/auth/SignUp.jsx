@@ -12,6 +12,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { signUp } from '../actions/auth';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { fireNotify } from '../actions/notifications';
 
 
 function Copyright(props) {
@@ -31,14 +36,20 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+
+  const [data,setData] = useState({email:'',password:'',fname:'',lname:'',username:''})
+  const dispatch = useDispatch()
+const navigate = useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+     dispatch(signUp({...data},fireNotify("Processing...!"),navigate))
   };
+
+  const handleChange = (name)=>e=>{
+    setData({...data,[name]:e.target.value})
+  }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -58,7 +69,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <form onSubmit={handleSubmit} style={{ marginBlockStart: '2em' }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -68,6 +79,8 @@ export default function SignUp() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  value={data.fname}
+                  onChange={handleChange('fname')}
                   autoFocus
                 />
               </Grid>
@@ -78,17 +91,32 @@ export default function SignUp() {
                   id="lastName"
                   label="Last Name"
                   name="lastName"
-                  autoComplete="family-name"
+                  value={data.lname}
+                  onChange={handleChange('lname')}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
+              <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  value={data.username}
+                  onChange={handleChange('username')}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
+                  type='email'
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={data.email}
+                  onChange={handleChange('email')}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -100,12 +128,15 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={data.password}
+                  onChange={handleChange('password')}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  label="I want to receive inspiration, new demanding courses,eBooks and updates via email."
+                  
                 />
               </Grid>
             </Grid>
@@ -115,7 +146,7 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               color="secondary"
-           
+              type="submit"
             >
              Sign Up
 
@@ -127,7 +158,7 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </form>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>

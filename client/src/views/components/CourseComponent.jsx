@@ -1,4 +1,4 @@
-import {ImageListItem,ImageListItemBar,IconButton,Button} from "@mui/material"
+import {ImageListItem,ImageListItemBar,IconButton,Button, Tooltip} from "@mui/material"
 import DonutLargeIcon from '@mui/icons-material/DonutLarge'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
@@ -10,7 +10,9 @@ const CourseComponent = ({courses,isEnrolled}) => {
         <>
          {
         map(courses,(value)=>(
-          <ImageListItem key={value.title} >
+          <Tooltip key={value.title} title={  isEnrolled? value.completed ? "Completed":"complete all Lessons":"Enroll today"}>
+          <ImageListItem  >
+          
             <img srcSet={value.img}
                   src={value.img}
                   alt={value.title}
@@ -22,9 +24,11 @@ const CourseComponent = ({courses,isEnrolled}) => {
                 subtitle={value.author}
                 actionIcon={
                   isEnrolled? value.completed ? (
+                  
                  <IconButton component={Link} to="learn/120">
                      <VerifiedUserIcon sx={{color:'yellow'}}/>
                  </IconButton>
+                
                  ):( 
                   <IconButton  component={Link} to="learn/120">
                     <DonutLargeIcon sx={{color:'yellow'}}/>
@@ -34,7 +38,9 @@ const CourseComponent = ({courses,isEnrolled}) => {
 
                 sx={{paddingInlineEnd:2}}
                 />
+              
           </ImageListItem>
+          </Tooltip>
         ))
 
         
