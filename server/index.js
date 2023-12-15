@@ -8,8 +8,7 @@ import userRoutes from "./routes/user.routes.js"
 import courseRoutes from "./routes/course.routes.js"
 import enrollRoutes from "./routes/enroll.routes.js"
 
-dotenv.config()
-
+dotenv.config();
 const app = express()
 const PORT = process.env.PORT || 8000
 
