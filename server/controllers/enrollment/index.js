@@ -1,4 +1,3 @@
-
 import Enrollment from "../../models/Enrollment.model.js"
 
 export const create = async(req,res)=>{
@@ -7,6 +6,7 @@ export const create = async(req,res)=>{
         Student:req.userId
     }
 
+
     newEnrollment.lessonStatus = req.course.lessons.map((lesson)=> {
         return {lesson:lesson,completed:false}
     })
@@ -14,8 +14,7 @@ export const create = async(req,res)=>{
 
     try {
         
-        const result = await enrollment.save()
-        
+        const result = await enrollment.save()    
         return res.status(200).json(result)
 
 
@@ -48,14 +47,17 @@ export const ById = async(req,res,next,id)=>{
     try {
         const result = await Enrollment.findById(id)
                                        .populate({path:'course',populate:{path:'instructor'}})
-                                       .populate('student','_id firstname lastname email username')
-                                       .exec()
+                                       .populate('Student','_id firstname lastname email username')
+                                       .exec();
+
         if(!result) return res.status(404).json({error:'No Such Enrollment Exist'})
 
-        req.enrollment = result
-        next()
+      console.log (result)
+
+       req.enrollment = result
+      next()
     } catch (error) {
-        if(!result) return res.status(403).json({error:error.message,message:"couldn't return Enrollment"})
+      return res.status(403).json({error:error.message,message:"couldn't return Enrollment"})
 
     }
 }
@@ -63,4 +65,60 @@ export const ById = async(req,res,next,id)=>{
 export const readEnrollment = (req,res)=>{
 
     return res.json(req.enrollment)
+}
+
+
+
+// completed courses
+
+export const complete = async(req,res)=>{
+    let updatedData = {}
+    updatedData['lessonStatus.$.complete'] = req.body.complete;
+    updatedData.updatedAt = Date.now()
+
+    if(req.body.courseCompleted){
+        updatedData.completed = req.body.courseCompleted;
+
+        try {
+            let enrollment = await Enrollment.updateOne({'lessonStatus._id':req.body.lessonStatus},{'$set':updatedData})
+            res.json(enrollment)
+
+        } catch (error) {
+            return res.status(400).json({error:error.message,message:'Lesson could not be completed'})
+        }
+    }
+
+}
+
+
+
+// list all enrollment
+
+
+export const listEnrollments = async(req,res)=>{
+    try {
+        const results = await Enrollment.find({Student: req.userId}).sort({'completed':1}).populate('course','_id name category').exec();
+        if(!results) return res.status(404).json({error:"No enrolled courses yet!"})
+
+        return res.json(results)
+    } catch (error) {
+        return res.status(400).json({error:"Could not fetch data"})
+    }
+}
+
+
+//enrollment status
+
+
+export const enrollmentStatus = async (req,res)=>{
+
+    try {
+        let stats= {}
+        stats.totalEnrolled = await Enrollment.find({course:req.course._id}).countDocuments();
+        stats.totalCompleted = await Enrollment.find({course:req.course._id}).exists("completed",true).countDocuments();
+
+        return res.json(stats)
+    } catch (error) {
+            return res.status(400).json({error:"Statics Couldn't be fetched"})
+    }
 }

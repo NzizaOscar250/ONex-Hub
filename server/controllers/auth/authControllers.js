@@ -24,14 +24,14 @@ export const signin=async(req,res)=>{
 
         if(!userExist.authenticate(data.password)) res.status(401).json({error: 'Incorrect Password'})
 
-        const token = jwt.sign({_id:userExist._id,email:userExist.email},secret,{expiresIn:'24h' })
+        const token = jwt.sign({_id:userExist._id,email:userExist.email,educator:userExist.educator},secret,{expiresIn:'24h' })
 
 
         res.cookie('remember_me', token, { expire: new Date() + 9999 })
      return   res.status(200).json({success:"userfound",token,user:{
-            _id:userExist._id,
             username:userExist.username,
             email:userExist.email,
+            educator:userExist.educator
 
         }})
 
