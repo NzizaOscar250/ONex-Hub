@@ -1,4 +1,4 @@
-
+import { jwtDecode } from "jwt-decode"
 
 const auth = {
   isAuthenticated() {
@@ -9,6 +9,20 @@ const auth = {
       return JSON.parse(sessionStorage.getItem('jwt'))
     else
       return false
+  },
+  isMycourse(insId){
+    if (typeof window == "undefined")
+    return false
+
+      if (sessionStorage.getItem('jwt')){
+          const userId = jwtDecode(this.isAuthenticated().token)._id
+
+        return userId == insId
+      }
+      else{
+        return false
+      }
+
   },
   isEducator(){
     if (typeof window == "undefined")

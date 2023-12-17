@@ -1,4 +1,4 @@
-import {AUTH,ERROR} from "../../constants"
+import {AUTH} from "../../constants"
 import * as API from "../../API"
 import { Update } from "../notifications"
 export const signIn = (formData,id,redirect)=>async(dispatch)=>{

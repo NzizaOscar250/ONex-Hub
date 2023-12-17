@@ -1,16 +1,25 @@
 import {  AddBoxOutlined } from "@mui/icons-material"
 import { Button,Paper,Stack, Typography, CssBaseline, List, ListItem, ListItemAvatar,
-  ListItemText, Divider } from "@mui/material"
+  ListItemText, Divider, CircularProgress } from "@mui/material"
 import code from "../../assets/code.jpg"
 import {map} from "lodash"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 // import useMediaQuery from "@mui/material/useMediaQuery"
 // import { useTheme } from "@mui/material"
 const dumy = [1,2,3,4,5,6,7,8]
 const MyCourse = () => {
 
+
+
   // const theme = useTheme();
   // const matchs = useMediaQuery(theme.breakpoints.down('sm'))
+   const courses = useSelector((state)=>state.mycourses)
+   console.log(courses)
+
+
+   if(!courses) return <CircularProgress/>
+  
 
   return (
 
@@ -31,17 +40,16 @@ const MyCourse = () => {
       </Stack>
       <List sx={{paddingBlockStart:10}}>
        {
-        map(dumy,(value,i)=>(
+        map(courses,(value,i)=>(
 
-          <Link to={`course/${i}`} key={value}>
+          <Link to={`course/${value._id}`} key={i}>
           <ListItem sx={{alignItems:'start'}}>
             <ListItemAvatar sx={{paddingInlineEnd:4}}>
                 {/* <Avatar src={code} /> */}
-                <img src={code} alt="cool" style={{borderRadius:0,width:200,height:120,objectFit:'cover'}}/>
+                <img src={value.image} alt="cool" style={{borderRadius:0,width:200,height:120,objectFit:'cover'}}/>
             </ListItemAvatar>
-            <ListItemText primary="Node js"
-                          secondary="Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta,
-                           quod! Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, quod!"/>
+            <ListItemText primary={value.name}
+                          secondary={value.description}/>
                           
           </ListItem>
             <Divider/>

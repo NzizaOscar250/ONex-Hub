@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import {  NavLink,useNavigate ,Link, useLocation} from 'react-router-dom';
+import {  NavLink,Link, useLocation} from 'react-router-dom';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import {map} from "lodash"
@@ -49,6 +49,13 @@ let updatedNavItems = isAuthorized
 
  React.useEffect(()=>{
        setProfile(JSON.parse(sessionStorage.getItem('jwt')))
+      
+       window.scrollTo({
+        top:0,
+        left:0,
+        behavior: 'smooth'
+       })
+       
  },[location])
 
 
@@ -66,18 +73,7 @@ let updatedNavItems = isAuthorized
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-  const navigate = useNavigate ();
-
-  React.useEffect(()=>{
-        handleClose()
-        window.scrollTo({
-          top:0,
-          left:0,
-          behavior: 'smooth'
-         })
-    },[navigate])
-
-    
+  
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>

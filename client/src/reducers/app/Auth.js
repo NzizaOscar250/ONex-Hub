@@ -8,7 +8,7 @@ export default function Auth (auth={data:null},action){
             console.log(action.payload)
               return {...auth, data:action?.payload}  
         default:
-            console.log(action.payload)
+            
         return auth
     }   
 }
