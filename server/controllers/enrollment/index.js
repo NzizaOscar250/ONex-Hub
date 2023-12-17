@@ -72,6 +72,7 @@ export const readEnrollment = (req,res)=>{
 // completed courses
 
 export const complete = async(req,res)=>{
+   
     let updatedData = {}
     updatedData['lessonStatus.$.complete'] = req.body.complete;
     updatedData.updatedAt = Date.now()
@@ -87,7 +88,8 @@ export const complete = async(req,res)=>{
             return res.status(400).json({error:error.message,message:'Lesson could not be completed'})
         }
     }
-
+   return res.status(400).json({error:"Could not be completed"})
+   
 }
 
 
@@ -97,7 +99,7 @@ export const complete = async(req,res)=>{
 
 export const listEnrollments = async(req,res)=>{
     try {
-        const results = await Enrollment.find({Student: req.userId}).sort({'completed':1}).populate('course','_id name category').exec();
+        const results = await Enrollment.find({Student: req.userId}).sort({'completed':1}).populate('course','_id name image description category').exec();
         if(!results) return res.status(404).json({error:"No enrolled courses yet!"})
 
         return res.json(results)
@@ -107,7 +109,7 @@ export const listEnrollments = async(req,res)=>{
 }
 
 
-//enrollment status
+//enrollment status instructor course
 
 
 export const enrollmentStatus = async (req,res)=>{

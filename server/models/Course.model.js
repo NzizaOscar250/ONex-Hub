@@ -31,6 +31,7 @@ const courseSchema = new mongoose.Schema({
         type:mongoose.Schema.ObjectId,
         ref:'Users'
     },
+    category:{type:String,required:'Category is required'},
     lessons:[lessonSchema]
 },{timestamps:true})
 

@@ -79,10 +79,18 @@ export const updateCourse = async(req,res)=>{
     
          if(!mongoose.isValidObjectId(req.course._id)) return res.status(404).json({error:'Invalid Educator'})
 
-         const result = await CourseModel.findByIdAndUpdate(req.course._id,{
-                ...req.body
-         })
+        //  const result = await CourseModel.findByIdAndUpdate(req.course._id,{
+        //         ...req.body,category:req.body.category
+        //  })
 
+          result = await CourseModel.findByIdAndUpdate(req.course._id,{
+            name:req.body.name,
+            description:req.body.description,
+            image:req.body.image,
+            published:req.body.published,
+            category:req.body.category,
+            updateDat:Date.now
+     })
          return res.json(result)
     } catch (error) {
         
