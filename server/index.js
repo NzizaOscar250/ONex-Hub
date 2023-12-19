@@ -13,7 +13,7 @@ const app = express()
 const PORT = process.env.PORT || 8000
 
 const offlineUrl = "mongodb://127.0.0.1:27017/web_classroom"
-const onlineUrl = "mongodb+srv://onexengineer1:ghZPAVWqCWlV7OTW@cluster0.qpxeisi.mongodb.net/?retryWrites=true&w=majority";
+const onlineUrl = process.env.DB || null;
 
 app.use(bodyParser.json({limit:"30mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:'30mb',extended:true}))
