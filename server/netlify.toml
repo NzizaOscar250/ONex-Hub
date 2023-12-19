@@ -18,5 +18,3 @@
   node_bundler = "esbuild"
   external_node_modules = ["express"]
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
