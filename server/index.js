@@ -29,7 +29,7 @@ mongoose.connect(onlineUrl).then(()=>{
     console.log("connected to mongo db")
 }).catch((e)=>console.log("error: ",e.message));
 
-
+console.log("Wooww")
 const handler = serverless(app);
 
 // Export the handler for Netlify
@@ -37,3 +37,4 @@ exports.handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   return await handler(event, context);
 };
+
