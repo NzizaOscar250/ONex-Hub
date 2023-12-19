@@ -1,0 +1,22 @@
+[build]
+  command = "cd server && npm install "
+  functions = "server"  
+
+[[redirects]]
+  force = true
+  from = "/api/*"
+  status = 200
+  to = "/.netlify/functions/api/:splat"
+
+[[redirects]]
+  force = true
+  from = "/*"
+  status = 200
+  to = "/.netlify/functions/server"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["express"]
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
