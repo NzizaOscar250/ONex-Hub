@@ -12,8 +12,8 @@ dotenv.config();
 export const app = express()
 const PORT = process.env.PORT || 8000
 
-const offlineUrl = "mongodb://127.0.0.1:27017/web_classroom"
-const onlineUrl = process.env.DB || null;
+// const offlineUrl = "mongodb://127.0.0.1:27017/web_classroom"
+const onlineUrl = process.env.DB 
 
 app.use(bodyParser.json({limit:"30mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:'30mb',extended:true}))
@@ -26,7 +26,7 @@ app.use("/courses/",courseRoutes)
 app.use("/enrollment/",enrollRoutes)
 // app.use("/",(req,res)=>res.json({message:'working'}))
 
-mongoose.connect(offlineUrl).then(()=>{
+mongoose.connect(onlineUrl).then(()=>{
     app.listen(PORT,()=>console.log(`server started at: https:\\localhost:${PORT}`))
 }).catch((e)=>console.log("error: ",e.message));
 
