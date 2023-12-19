@@ -18,7 +18,7 @@ import {toast} from "react-toastify"
             });
     }
 
-
+//pswd ghZPAVWqCWlV7OTW
     export const fireNotify =(info)=> toast.info(info,{theme:'colored',toastId:'oscar250'})
     export const Update = (id,message,type)=> toast.update(id, { render: message, type});
         

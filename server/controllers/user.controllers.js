@@ -64,9 +64,10 @@ export const updateUser = async(req,res)=>{
     let user = req.profile;
 
     // user.updated = Date.now()
+  
     const newUpdate = {...req.body,
-        firstname:req.body.fname,
-        lastname:req.body.lname,
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
         profile:req.body.profile,
         about:req.body.about,
         educator:req.body.educator,
@@ -74,11 +75,11 @@ export const updateUser = async(req,res)=>{
 
         
         const updated = await UserModel.findByIdAndUpdate(user._id,newUpdate)
-       
+        const  result = await UserModel.findById(updated._id)
 
-        updated.hashed_password = undefined
-        updated.salt = undefined
-        res.json(updated)
+        result.hashed_password = undefined
+        result.salt = undefined
+        res.json(result)
     // res.json({waitint:"cool"})
 
    } catch (error) {
@@ -117,7 +118,6 @@ export const userById = async(req,res,next,id)=>{
         
         user.salt = undefined
         user.hashed_password = undefined
-
         req.profile = user;
         next()
 
@@ -154,87 +154,4 @@ export const getUserDetailsById = async(req,res,next,id)=>{
  * operations with authentication and authorization
  */
 
-
-
-/***
- * FOLLOW OR UNFOLLOW END POINTS
- */
-
-
-export const addFollowing = async (req,res,next)=>{
-try {
-    const {followId} = req.body
-    
-    if (!mongoose.isValidObjectId(followId)) return res.status(400).json({error: 'Invalid user'})
-    
-    await UserModel.findByIdAndUpdate(req.userId,{
-        $push:{following:followId}
-    })
-
-     next()
-
-} catch (error) {
-    console.log("On addFollowing",error.message)
-}
-}
-export const addFollower = async (req,res)=>{
-        try {
-
-            const {followId} = req.body
-            
-            if (!mongoose.isValidObjectId(followId)) return res.status(400).json({error: 'Invalid user'})
-    
-            let result = await UserModel.findByIdAndUpdate(followId,{
-                $push:{followers:req.userId}
-            },{new:true})
-            .populate("following","_id username profile about")
-            .populate("followers","_id username profile about")
-            .exec()
-
-            result.hashed_password = undefined;
-            result.salt = undefined
-            res.json(result)
-        } catch (error) {
-         console.log("on addFollower",error.message)
-        }
-}
-
-
-
-export const removeFollowing = async (req,res,next)=>{
-          const {unfollowId} = req.body
-          try {
-                if(!mongoose.isValidObjectId(unfollowId))return res.status(401).json({error:'Invalid user '})
-            
-        await UserModel.findByIdAndUpdate(req.userId,{
-            $pull:{following:unfollowId}
-        })
-        next()
-          } catch (error) {
-            console.log("on removeFollowing",error.message)
-          }
-}
-
-
-
-export const removeFollower = async (req,res)=>{
-    const {unfollowId} = req.body
-    try {
-          if(!mongoose.isValidObjectId(unfollowId)) return res.status(401).json({error:'Invalid user '})
-      
- const result = await UserModel.findByIdAndUpdate(unfollowId,{
-      $pull:{followers:req.userId}
-  },{new:true}).populate('following','_id username profile about')
-               .populate('followers','_id username profile about')
-               .exec()
-               result.hashed_password = undefined
-               result.salt=undefined
-
-               res.json(result)
-  
-
-    } catch (error) {
-        console.log("on RemoveFollower",error.message)
-    }
-}
 

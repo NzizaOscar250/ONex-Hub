@@ -55,7 +55,7 @@ export const empSignup=async(req,res)=>{
     try{
         const {username,fname,lname,email,password}=req.body;
         //check if user alreasdy exist
-              console.log(req.body.email)
+           
 
               const validate = username == undefined || fname == undefined || lname == undefined || email == undefined || password == undefined
  

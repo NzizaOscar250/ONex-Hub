@@ -15,7 +15,7 @@ import { useTheme } from "@mui/material"
 import { useState,useEffect } from "react"
 import { useSelector } from "react-redux"
 import auth from "../../helper/auth.helper.js"
-import { removeCourse } from "../../actions/courses/"
+import { enrollCourse, removeCourse,updateCourse } from "../../actions/courses/"
 import { toast } from "react-toastify"
 import { useDispatch } from "react-redux"
 
@@ -36,10 +36,13 @@ const Course = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [course,setCourse] = useState({name:'',resourse_url:'',description:'',category:'',published:''})
-   const myCourse = useSelector((state)=>state.mycourses).find((course)=>course._id == params.courseId)
+   let myCourse = useSelector((state)=> state.mycourses.find((course)=>course._id == params.courseId) || state.published.find((course)=>course._id == params.courseId) )
+    const {enrollments} = useSelector((state)=>state.enrollments)
+
+
+   
    useEffect(() => {
      setCourse({...course,...myCourse})
- 
    }, [myCourse])
   
    const onShowConfirm = (data) => {
@@ -47,12 +50,22 @@ const Course = () => {
         setOpen({...data,open:true});
     };
     const onConfirm = (data) =>(event)=> {
-        
+        event.preventDefault()
     
      if(data.open && data.type === "DELETE"){
             dispatch(removeCourse(data.courseId,toast.info("Removing course...."),navigate))
             setOpen({...open,...data,open:false});
-            console.log(data)
+     }
+     
+     if(data.open && data.type === "PUBLISH"){
+        dispatch(updateCourse({published:true},toast.info("Publishing...!",{toastId:'oscar'}),data.courseId))
+        setOpen({...open,...data,open:false})
+     }
+    //  unpublish
+
+    if(data.open && data.type === "UNPUBLISH"){
+        dispatch(updateCourse({published:false},toast.info("Publishing...!",{toastId:'oscar'}),data.courseId))
+        setOpen({...open,...data,open:false})
      }
 
      setOpen({...open,open:false});
@@ -63,9 +76,20 @@ const Course = () => {
     const openEdit = ()=>{
         setEdit((prev)=>!prev)
     }
+    
+    const handleEnroll = (courseId)=>{
+        dispatch(enrollCourse(courseId,toast.info("Sending request...")))  
+    }
+ 
+    const checkEnroll=(courseId)=>{
+
+        return enrollments.find((item)=>item.course._id == courseId)
+    }
+   
 
 
-    if (!myCourse) return  <><CircularProgress/> Course Not Found, it may have been deleted </>
+
+    if (!myCourse) return  <><CircularProgress/> </>
 
   return (
 
@@ -95,18 +119,18 @@ const Course = () => {
     <Card elevation={0} sx={{padding:0,margin:0}}>
         <CardHeader
             title={<Typography variant="h5" color="text.secondary">{course?.name}</Typography>}
-            subheader={<Typography  sx={{py:1,fontSize:15}} color="primary">Published by <b>{course?.instructor?.username}</b></Typography>}
+            subheader={<Typography  sx={{py:1,fontSize:15}} color="primary"> { course.published ? "Published":"Added"} by <b>{course?.instructor?.username}</b></Typography>}
             action={
-                auth.isMycourse(course?.instructor?._id) ? (<>
+                auth.isMycourse(course?.instructor?._id? course.instructor?._id : course?.instructor ) ? (<>
                     <IconButton color="secondary" component={Link} to="edit"><Edit/></IconButton>
                     { 
                        !course.published && <Button endIcon={<Save/>} color="secondary"
                                                      variant="contained" 
                                                      onClick={()=>{
-                                                        onShowConfirm({title:'Delete Course',
-                                                        content1:`This will permanently delete ${course.name} from your courses`,
-                                                        content2:'are you sure ? Want to delete course',
-                                                        type:'DELETE',
+                                                        onShowConfirm({title:'Publish Course',
+                                                        content1:`This will permanently make this  "${course.name} course" available to public`,
+                                                        content2:'Are you sure to publish this course?',
+                                                        type:'PUBLISH',
                                                         courseId:course._id})
                                                         
                                                         
@@ -122,15 +146,16 @@ const Course = () => {
                     
                     }><Delete/></IconButton></>)
 
-                    : <Button startIcon={<AddBusiness/>} color="primary" variant="contained" >Enroll</Button>
+                    : !auth.isMycourse(course?.instructor?._id) && !checkEnroll(course._id) ? <Button startIcon={<AddBusiness/>} 
+                    color="primary" variant="contained" onClick={()=> handleEnroll(course._id)} >Enroll</Button> : <Button variant="outlined" component={Link} to={`/learn/${checkEnroll(course._id)._id}`}>Start Learing</Button>
                 
             }
             />
         <ListItem sx={{alignItems:'start',display:matchs?'block':'flex'}}>
             <ListItemAvatar sx={{paddingInlineEnd:4}}>
                 {/* <Avatar src={code} /> */}
-                <img src={course.image} alt="cool" style={{borderRadius:0,width:matchs?400:300,
-                    height:matchs?250:200,objectFit:'cover',padding:4,background:'#ddd',borderRadius:'5px'}}/>
+                <img src={course.image} alt="cool" style={{borderRadius:'5px',width:"100%",
+                    height:matchs?250:200,objectFit:'cover',padding:4,background:'#ddd'}}/>
             </ListItemAvatar>
             <ListItemText primary={<Typography variant="h5" color="text.secondary">{course?.name}</Typography>}
                           secondary={<Typography variant="body2" sx={{py:1}}>{course?.description}</Typography>} />
@@ -150,7 +175,7 @@ const Course = () => {
                 <>
                 <Typography variant="body2" color="text.secondary">{course?.lessons?.length} Lessons</Typography>
                {
-                    auth.isMycourse(course?.instructor?._id) && <Button startIcon={<Edit/>} sx={{mt:3}} onClick={openEdit}>Edit and Re-arrange</Button>
+                    (auth.isMycourse(course?.instructor?._id) && course.lessons.length) ? <Button startIcon={<Edit/>} sx={{mt:3}} onClick={openEdit}>Edit and Re-arrange</Button>:''
                 
                }
                 

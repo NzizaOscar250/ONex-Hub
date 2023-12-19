@@ -14,8 +14,18 @@ export const create = async(req,res)=>{
 
     try {
         
-        const result = await enrollment.save()    
-        return res.status(200).json(result)
+        const result = await enrollment.save()
+            if(result){
+                    
+        const enrollments = await Enrollment.find({course:result.course,Student:result.Student}).populate('course','_id name image description category').exec()
+        // enrollments.enrollment.course.instructor.hashed_password=undefined
+        // enrollments.enrollment.course.instructor.salt=undefined
+        // enrollments.enrollment.course.instructor.profile=undefined
+        return res.json(enrollments)
+            }
+    
+        
+       
 
 
     } catch (error) {
@@ -27,6 +37,8 @@ export const create = async(req,res)=>{
 export const findEnrollment = async(req,res,next)=>{
         try {
             const enrollments = await Enrollment.find({course:req.course._id,Student:req.userId})
+                                                .populate({path:'course',populate:{path:'instructor'}})
+                                                .populate('Student','_id firstname lastname email username').exec()
 
 
             if(enrollments.length == 0){
@@ -52,7 +64,6 @@ export const ById = async(req,res,next,id)=>{
 
         if(!result) return res.status(404).json({error:'No Such Enrollment Exist'})
 
-      console.log (result)
 
        req.enrollment = result
       next()
@@ -63,7 +74,11 @@ export const ById = async(req,res,next,id)=>{
 }
 
 export const readEnrollment = (req,res)=>{
-
+    req.enrollment.course.instructor.hashed_password=undefined
+    req.enrollment.course.instructor.salt=undefined
+    req.enrollment.course.instructor.profile=undefined
+    
+    
     return res.json(req.enrollment)
 }
 

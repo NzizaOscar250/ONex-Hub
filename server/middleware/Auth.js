@@ -20,7 +20,7 @@ export const isAuthorized = async(req,res,next)=>{
         next()
     } catch (error) {
         
-        res.status(401).json({error:'Requires Sign in '})
+        res.status(401).json({error:'Requires Sign in ',redirect:'/auth'})
     }
 }
 

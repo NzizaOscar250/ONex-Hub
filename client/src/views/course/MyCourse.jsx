@@ -1,21 +1,14 @@
 import {  AddBoxOutlined } from "@mui/icons-material"
 import { Button,Paper,Stack, Typography, CssBaseline, List, ListItem, ListItemAvatar,
   ListItemText, Divider, CircularProgress } from "@mui/material"
-import code from "../../assets/code.jpg"
 import {map} from "lodash"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
-// import useMediaQuery from "@mui/material/useMediaQuery"
-// import { useTheme } from "@mui/material"
-const dumy = [1,2,3,4,5,6,7,8]
+import { blue } from "@mui/material/colors"
+
 const MyCourse = () => {
-
-
-
-  // const theme = useTheme();
-  // const matchs = useMediaQuery(theme.breakpoints.down('sm'))
    const courses = useSelector((state)=>state.mycourses)
-   console.log(courses)
+    
 
 
    if(!courses) return <CircularProgress/>
@@ -25,7 +18,7 @@ const MyCourse = () => {
 
    <>
    
-   <Paper component="div" sx={{margin:'1em auto ',padding:4,minHeight:'100vh'}} elevation={6}>
+   <Paper component="div" sx={{margin:'1em auto ',padding:4,minHeight:'100vh'}} elevation={0}>
     <CssBaseline/>
       <Stack direction="row" justifyContent="space-between">
             <Typography variant="h5" color="secondary">Your Courses</Typography>
@@ -38,22 +31,34 @@ const MyCourse = () => {
               to="new"
              >New Course</Button>
       </Stack>
-      <List sx={{paddingBlockStart:10}}>
+      <List sx={{paddingBlockStart:10,width:"90%"}}>
        {
         map(courses,(value,i)=>(
 
-          <Link to={`course/${value._id}`} key={i}>
-          <ListItem sx={{alignItems:'start'}}>
+          
+        <Stack direction="row" justifyContent="start" key={i} > 
+            <Link to={`course/${value._id}`}  style={{color:blue[500],display:'block'}}> 
+          <ListItem sx={{width:'100%'}}>
             <ListItemAvatar sx={{paddingInlineEnd:4}}>
                 {/* <Avatar src={code} /> */}
-                <img src={value.image} alt="cool" style={{borderRadius:0,width:200,height:120,objectFit:'cover'}}/>
+                <img src={value.image} alt="cool" style={{borderRadius:0,width:'100%',height:120,objectFit:'cover'}}/>
+            
             </ListItemAvatar>
-            <ListItemText primary={value.name}
-                          secondary={value.description}/>
-                          
+            <ListItemText primary={<Typography variant="body1" sx={{py:1}}>{value.name}</Typography>}
+              secondary={value.description}/>
+           
           </ListItem>
+          
             <Divider/>
           </Link>
+          {/* <Typography variant="body2" sx={{alignSelf:'start',px:2}}>
+          <Info color="secondary"/>
+            {
+              value.published?"Published": value.lessons.length ? "Publish" : "Add lesson to publish"
+            }
+          </Typography>
+           */}
+          </Stack>
 
         ))
        }

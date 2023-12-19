@@ -11,13 +11,17 @@ import { GET_PUBLISHED_COURSES,
             ENROLL_COURSE,
             ENROLLMENTS,
             COURSE_STATITICS,
-            MY_COURSES
+            MY_COURSES,
+            ENROLLED_IN,
+            LEARN
  } from "../../constants"
 
 import auth from "../../helper/auth.helper.js"
 
 let id = auth.isAuthenticated()?.token
- id = jwtDecode(id)?._id
+if (id){
+    id = jwtDecode(id)?._id
+}
 
 export const createCourse = (formData,notId)=> async(dispatch)=>{
     try {
@@ -70,7 +74,6 @@ export const removeCourse = (courseId,notId,navigate)=> async(dispatch)=>{
         const {data} = await api.removeCourse(courseId)
         Update(notId,"Successfully Removed...","success")
         dispatch({type:REMOVE_COURSE,payload:data})
-        Update(notId,"Redirecting...","done")
         navigate("/courses")
     } catch (error) {
          const {data} = error.response
@@ -82,8 +85,8 @@ export const removeCourse = (courseId,notId,navigate)=> async(dispatch)=>{
 //add lesson
 export const addLessons = (formData,notId)=> async(dispatch)=>{
     try {
-        const {data} = await api.addLesson(formData,id)
-        Update(notId,"Successfully added...","success")
+        const {data} = await api.addLesson(formData,formData.id)
+        Update(notId,"Successfully done...","success")
         dispatch({type:ADDLESSON,payload:data})
     } catch (error) {
         console.log(error)
@@ -121,10 +124,21 @@ export const enrollCourse = (courseId,notId)=> async(dispatch)=>{
 export const getEnrollments = (enrollId,notId)=> async(dispatch)=>{
     try {
         const {data} = await api.enrollments(enrollId)
-        dispatch({type:ENROLLMENTS,payload:data})
+        dispatch({type:LEARN,payload:data})
+        Update(notId,"Course is ready","success")
     } catch (error) {
-        console.log(error)
         Update(notId,"Failed...","error")
+    }
+}
+
+// enrolled in courses
+
+export const getEnrolledCourses = ()=> async(dispatch)=>{
+    try {
+        const {data} = await api.enrolledIn()
+        dispatch({type:ENROLLED_IN,payload:data})
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -138,3 +152,4 @@ export const enrollStatics = (enrollId)=> async(dispatch)=>{
     }
 
 }
+

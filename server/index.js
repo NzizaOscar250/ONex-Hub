@@ -12,10 +12,11 @@ dotenv.config();
 const app = express()
 const PORT = process.env.PORT || 8000
 
-const url = "mongodb://127.0.0.1:27017/web_classroom"
+const offlineUrl = "mongodb://127.0.0.1:27017/web_classroom"
+const onlineUrl = "mongodb+srv://onexengineer1:ghZPAVWqCWlV7OTW@cluster0.qpxeisi.mongodb.net/?retryWrites=true&w=majority";
 
-app.use(bodyParser.json({extended:true}))
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json({limit:"30mb",extended:true}))
+app.use(bodyParser.urlencoded({limit:'30mb',extended:true}))
 app.use(cors())
 
 app.use("/auth/",authroutes)
@@ -24,7 +25,7 @@ app.use("/courses/",courseRoutes)
 app.use("/enrollment/",enrollRoutes)
 // app.use("/",(req,res)=>res.json({message:'working'}))
 
-mongoose.connect(url).then(()=>{
+mongoose.connect(offlineUrl).then(()=>{
     app.listen(PORT,()=>console.log(`server started at: https:\\localhost:${PORT}`))
 }).catch((e)=>console.log("error: ",e.message))
 

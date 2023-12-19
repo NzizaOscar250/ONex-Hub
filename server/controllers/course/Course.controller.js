@@ -5,16 +5,17 @@ import CourseModel from "../../models/Course.model.js"
 
 export const createCourse = async(req,res)=>{
     try {
-         const {name,image,description} = req.body 
+         const {name,image,description,category} = req.body 
          const instructor = req.profile._id
-          console.log(req.body)
+        
          if(!mongoose.isValidObjectId(instructor)) return res.status(404).json({error:'Invalid Educator'})
 
          const newCourse = await CourseModel.create({
                 name:name,
                 description:description,
                 image:image,
-                instructor:instructor
+                instructor:instructor,
+                category:category
          })
 
          return res.json(newCourse)
@@ -77,23 +78,16 @@ export const getPublishedCourses = async(req,res)=>{
 export const updateCourse = async(req,res)=>{
     try {
     
-         if(!mongoose.isValidObjectId(req.course._id)) return res.status(404).json({error:'Invalid Educator'})
+         if(!mongoose.isValidObjectId(req.course._id)) return res.status(404).json({error:'Invalid course'})
 
-        //  const result = await CourseModel.findByIdAndUpdate(req.course._id,{
-        //         ...req.body,category:req.body.category
-        //  })
 
-          result = await CourseModel.findByIdAndUpdate(req.course._id,{
-            name:req.body.name,
-            description:req.body.description,
-            image:req.body.image,
-            published:req.body.published,
-            category:req.body.category,
+       const    result = await CourseModel.findByIdAndUpdate(req.course._id,{
+            ...req.body,
             updateDat:Date.now
      })
          return res.json(result)
     } catch (error) {
-        
+        return res.status(400).json({error})
     }
 }
 

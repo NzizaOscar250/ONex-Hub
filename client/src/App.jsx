@@ -48,9 +48,9 @@ const router = createBrowserRouter(
         <Route path="soon" element={<CommingSoon/>}/>
         <Route path="enrollement" element={<Enrollment/>}/>
         <Route path="learn/:enrollId" element={<Enrollment/>}/>
-        <Route path="profile" element={<User/>}>
-              <Route index element={<Profile/>}/>
-              <Route path="edit" element= {<EditUser/>}/>
+        <Route path="profile" element={<ProtectedRoute><User/> </ProtectedRoute>}>
+              <Route index element={ <ProtectedRoute> <Profile/> </ProtectedRoute>}/>
+              <Route path="edit" element= { <ProtectedRoute> <EditUser/> </ProtectedRoute>}/>
         </Route>
         <Route path="trend" element={<Courses/>}/>
 {/* courses route */}

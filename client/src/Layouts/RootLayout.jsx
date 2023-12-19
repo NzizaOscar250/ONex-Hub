@@ -3,20 +3,27 @@ import { Outlet,Link } from "react-router-dom";
 import Navigation from "../views/components/Navigation";
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
-import {useDispatch} from "react-redux"
-import { getEnrollments, getMyCourses, getPublished } from "../actions/courses";
+import {useDispatch,useSelector} from "react-redux"
+import { getEnrolledCourses,  getMyCourses, getPublished } from "../actions/courses";
+import { fetchUserDetails } from "../actions/auth";
+import auth from "../helper/auth.helper.js"
+
 const RootLayout = ()=>{
 const dispatch = useDispatch();
 
 useEffect(()=>{
     dispatch(getPublished())
-    dispatch(getEnrollments())
-    dispatch(getMyCourses())
+    dispatch(getEnrolledCourses())
+    if(auth.isEducator()){
+      dispatch(getMyCourses())
+    }
     
+    if(auth.userInfo()){
+      dispatch(fetchUserDetails(auth.userInfo()))
+   }
+  
 },[dispatch])
 
-
-  
 return (
   <>
     <Navigation/>

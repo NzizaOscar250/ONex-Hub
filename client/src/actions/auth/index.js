@@ -1,4 +1,4 @@
-import {AUTH} from "../../constants"
+import {AUTH, USER_INFO} from "../../constants"
 import * as API from "../../API"
 import { Update } from "../notifications"
 export const signIn = (formData,id,redirect)=>async(dispatch)=>{
@@ -11,7 +11,7 @@ export const signIn = (formData,id,redirect)=>async(dispatch)=>{
        
     } catch (error) {
         const {response} = error
-        Update(id,response.data.error || error.message,"error")
+        Update(id,response?.data?.error,"error")
     }
 }
 
@@ -25,5 +25,32 @@ export const signUp = (formData,id,redirect)=>async(dispatch)=>{
         const {response} = error
         console.log(error) 
         Update(id,response.data.error || response.data,"error")
+    }
+}
+
+
+export const updateUser = (formData,notId)=> async(dispatch)=>{
+    try {
+        const {data} = await API.updateProfile(formData)
+        Update(notId,"Account updated successfully ","success")
+        dispatch({type:'UPDATE_USER',payload:data})
+    
+   } catch (error) {
+
+    //    const {response} = error
+       Update(notId,"Updating failed","error")
+   }
+
+} 
+
+
+
+
+export const fetchUserDetails = (id)=>async(dispatch)=>{
+    try {
+        const {data} = await API.fetchUser(id)
+        dispatch({type:USER_INFO,payload:data})
+    } catch (error) {
+        console.log(error.message)
     }
 }

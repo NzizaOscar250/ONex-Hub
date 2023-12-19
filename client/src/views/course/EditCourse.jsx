@@ -1,7 +1,7 @@
 
 import { AddAPhotoRounded, Save,} from "@mui/icons-material"
 import {  Button,Paper,  Typography, CssBaseline, ListItem, ListItemAvatar, 
- ListItemText, Divider, Card, CardHeader,TextField } from "@mui/material"
+ ListItemText, Divider, Card, CardHeader,TextField, CircularProgress } from "@mui/material"
 
 import { useParams } from "react-router-dom"
 // import useMediaQuery from "@mui/material/useMediaQuery"
@@ -16,8 +16,8 @@ import { toast } from "react-toastify"
 const EditCourse = () => {
 
     const params = useParams()
-    const [course,setCourse] = useState({name:'',description:'',category:'',published:'',image:''})
-    const myCourse = useSelector((state)=>state.published).find((course)=>course._id == params.courseId)
+    const [course,setCourse] = useState({name:'',image:'',description:'',published:'',_id:''})
+    const myCourse = useSelector((state)=>state.mycourses).find((course)=>course._id == params.courseId)
     const fileInputRef = useRef(null);
     const dispatch = useDispatch()
     
@@ -63,11 +63,12 @@ const EditCourse = () => {
 
 
     useEffect(() => {
-      setCourse({...myCourse})
+      setCourse({...course,...myCourse})
        
     }, [myCourse])
 
-   
+   if (!myCourse) return <CircularProgress/>
+
   return (
 
    <>

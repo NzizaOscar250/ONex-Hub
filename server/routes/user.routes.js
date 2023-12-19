@@ -6,7 +6,7 @@ const userRoutes = exress.Router()
 userRoutes.get('/',isAuthorized,getUser)
           .get('/:userId',isAuthorized,getUser)
           .get('/details/:user',isAuthorized,getUser)
-          .put("/:userId",isAuthorized,updateUser)
+          .post("/update/:userId",isAuthorized,updateUser)
           .delete("/:userId",isAuthorized,deleteUser);
 
 

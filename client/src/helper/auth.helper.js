@@ -2,13 +2,27 @@ import { jwtDecode } from "jwt-decode"
 
 const auth = {
   isAuthenticated() {
-    if (typeof window == "undefined")
+    if (typeof window == "undefined" || sessionStorage.getItem('jwt') == 'undefined')
       return false
 
     if (sessionStorage.getItem('jwt'))
       return JSON.parse(sessionStorage.getItem('jwt'))
     else
       return false
+  },
+  userInfo(){
+    if (typeof window == "undefined")
+    return false
+
+      if (sessionStorage.getItem('jwt')){
+          const userId = jwtDecode(this.isAuthenticated().token)._id
+
+        return userId 
+      }
+      else{
+        return false
+      }
+
   },
   isMycourse(insId){
     if (typeof window == "undefined")
@@ -45,13 +59,14 @@ const auth = {
       document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     // })
   },
-  updateUser(user, cb) {
+  updateUser(user) {
     if(typeof window !== "undefined"){
       if(sessionStorage.getItem('jwt')){
          let auth = JSON.parse(sessionStorage.getItem('jwt'))
-         auth.user = user
+        
+         auth.user = {username:user.username,email:user.email,educator:user.educator}
          sessionStorage.setItem('jwt', JSON.stringify(auth))
-         cb()
+    
        }
     }
   }
