@@ -1,0 +1,3 @@
+version: 1
+buildCommand: npm install
+startCommand: npm start
