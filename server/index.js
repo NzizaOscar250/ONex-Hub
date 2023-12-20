@@ -7,7 +7,6 @@ import authroutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import courseRoutes from "./routes/course.routes.js"
 import enrollRoutes from "./routes/enroll.routes.js"
-import serverless from "serverless-http";
 
 dotenv.config();
 export const app = express()
@@ -29,12 +28,5 @@ mongoose.connect(onlineUrl).then(()=>{
     console.log("connected to mongo db")
 }).catch((e)=>console.log("error: ",e.message));
 
-console.log("Wooww")
-const handler = serverless(app);
 
 // Export the handler for Netlify
-exports.handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-  return await handler(event, context);
-};
-
