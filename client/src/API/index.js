@@ -1,5 +1,6 @@
 import axios from "axios"
 import auth from "../helper/auth.helper"
+import {toast} from "react-toastify"
 
 const API = axios.create({
     baseURL:'https://onexhub.onrender.com/api/',
@@ -13,8 +14,6 @@ const API = axios.create({
 API.interceptors.request.use((req)=>{
    if(auth.isAuthenticated()){
      req.headers.Authorization = 'Bearer '+ auth.isAuthenticated()?.token
-
-
         
    }
    
@@ -31,6 +30,16 @@ return res
         window.location.reload()
     }
 
+    if(error.code === 'ERR_NETWORK') {
+        toast.update("oscar250",{render: `${error.message} , Check internet connection`,type:"warning",position:'top-center'})
+    }  
+    if(error.code === 'ERR_BAD_REQUEST' && error.response){
+            const {data} = error.response
+        toast.update("oscar250",{render: `${data?.error}`,type:"error",position:'top-center'})
+    }
+
+    console.log(error)
+        
     return error;
 })
 

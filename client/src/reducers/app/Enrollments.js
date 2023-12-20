@@ -4,7 +4,6 @@ export default function Enrollments(data={enrollments:[],learning:null},action){
      let i;
     switch (action.type) {
         case ENROLL_COURSE:
-            console.log(data,"action: ",action.payload)
              i =[action.payload]
             return {...data,enrollments:[...data.enrollments, ...i]}
         case ENROLLMENTS:

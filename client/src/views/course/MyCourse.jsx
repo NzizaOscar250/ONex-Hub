@@ -11,7 +11,7 @@ const MyCourse = () => {
     
 
 
-   if(!courses) return <CircularProgress/>
+   if(!courses) return <div style={{width:'200px',margin:'auto',padding:20,minHeight:'100vh',display:'flex',justifyContent:'center',alignItems:'center',gap:5}}><CircularProgress size={15} /> Loading...</div>
   
 
   return (
@@ -33,7 +33,7 @@ const MyCourse = () => {
       </Stack>
       <List sx={{paddingBlockStart:10,width:"90%"}}>
        {
-        map(courses,(value,i)=>(
+     courses.length == 0 ?<Typography>You don't have any course yet!! </Typography> :  map(courses,(value,i)=>(
 
           
         <Stack direction="row" justifyContent="start" key={i} > 

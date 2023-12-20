@@ -7,15 +7,12 @@ export default function Auth (auth={data:null,userInfo:null},action){
         case AUTH:
             sessionStorage.setItem('jwt', JSON.stringify(action.payload))
               return {...auth, data:action?.payload} 
-        case 'UPDATE_USER':
-                    
-                    newAuth.updateUser(action?.payload)
-             
+        case 'UPDATE_USER':    
+                    newAuth.updateUser(action?.payload) 
               return {...auth,userInfo:action?.payload}
         case USER_INFO:
             return {...auth,userInfo:action?.payload}
-        default:
-            
+        default:        
         return auth
     }   
 }

@@ -29,7 +29,7 @@ let navItems = [{name:'Home',to:"/"}
 function Navigation(props) {
  
   const isAuthorized = auth.isAuthenticated()
-  const isEducator = auth.isEducator()
+  const [isEducator,setIsEducator] = React.useState(JSON.parse(sessionStorage.getItem('jwt')).user.educator)
   const [profile,setProfile]=React.useState()
 let updatedNavItems = isAuthorized
     ? [...navItems]
@@ -39,6 +39,7 @@ let updatedNavItems = isAuthorized
         { name: 'Signup', to: '/auth/signup' },
       ];
 
+
  updatedNavItems = isEducator ? [...updatedNavItems,{name:'Teach',to:"courses",icon:<LocalLibrary sx={{fontSize:20}}/>,
  styles:{display:'flex',alignItems:'center',gap:1}}] : [...updatedNavItems]
 
@@ -47,14 +48,15 @@ let updatedNavItems = isAuthorized
 
  React.useEffect(()=>{
        setProfile(JSON.parse(sessionStorage.getItem('jwt')))
-      
+      if (sessionStorage.getItem('jwt')) setIsEducator(JSON.parse(sessionStorage.getItem('jwt')).user.educator)
+
        window.scrollTo({
         top:0,
         left:0,
         behavior: 'smooth'
        })
        
- },[location])
+ },[location,])
 
 
  const { window: Window } = props;

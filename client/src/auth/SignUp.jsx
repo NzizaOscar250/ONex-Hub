@@ -5,19 +5,19 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { signUp } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { fireNotify } from '../actions/notifications';
-
+import { Link } from 'react-router-dom';
+import { Paper } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -53,11 +53,11 @@ const navigate = useNavigate()
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Paper component="main" elevation={0}  sx={{margin:'2em auto ',width:500,paddingInline:5,background:'rgba(235, 235, 235, 0.25)'}}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -74,6 +74,7 @@ const navigate = useNavigate()
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
+                  color='secondary'
                   name="firstName"
                   required
                   fullWidth
@@ -88,6 +89,7 @@ const navigate = useNavigate()
                 <TextField
                   required
                   fullWidth
+                  color='secondary'
                   id="lastName"
                   label="Last Name"
                   name="lastName"
@@ -99,6 +101,7 @@ const navigate = useNavigate()
               <TextField
                   required
                   fullWidth
+                  color='secondary'
                   id="username"
                   label="Username"
                   name="username"
@@ -111,6 +114,7 @@ const navigate = useNavigate()
                 <TextField
                   required
                   fullWidth
+                  color='secondary'
                   type='email'
                   label="Email Address"
                   name="email"
@@ -123,6 +127,8 @@ const navigate = useNavigate()
                 <TextField
                   required
                   fullWidth
+                  
+                  color='secondary'
                   name="password"
                   label="Password"
                   type="password"
@@ -147,13 +153,14 @@ const navigate = useNavigate()
               sx={{ mt: 3, mb: 2 }}
               color="secondary"
               type="submit"
+              disableElevation
             >
              Sign Up
 
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/auth" style={{textDecoration:'underline',color:'dodgerblue'}} >
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -161,7 +168,7 @@ const navigate = useNavigate()
           </form>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container>
+      </Paper>
     </ThemeProvider>
   );
 }

@@ -5,12 +5,15 @@ export const signIn = (formData,id,redirect)=>async(dispatch)=>{
 
     try {
         const {data} = await API.SignIn(formData)
-        Update(id,"Successfully Loged in","success")
+
+        if(data){Update(id,"Successfully Loged in","success")
         dispatch({type:AUTH,payload:data})
-        redirect("/")
+        redirect("/")}
+        
        
     } catch (error) {
         const {response} = error
+        console.log(response)
         Update(id,response?.data?.error,"error")
     }
 }
@@ -18,12 +21,11 @@ export const signIn = (formData,id,redirect)=>async(dispatch)=>{
 export const signUp = (formData,id,redirect)=>async(dispatch)=>{
     try {
          const {data} = await API.SignUp(formData)
-         Update(id,"Account created successfully ","success")
+         if(data){ Update(id,"Account created successfully ","success")
          dispatch({type:AUTH,payload:data})
-         redirect("/")
+         redirect("/")}
     } catch (error) {
         const {response} = error
-        console.log(error) 
         Update(id,response.data.error || response.data,"error")
     }
 }
@@ -32,12 +34,12 @@ export const signUp = (formData,id,redirect)=>async(dispatch)=>{
 export const updateUser = (formData,notId)=> async(dispatch)=>{
     try {
         const {data} = await API.updateProfile(formData)
-        Update(notId,"Account updated successfully ","success")
-        dispatch({type:'UPDATE_USER',payload:data})
+        if(data){ Update(notId,"Account updated successfully ","success")
+        dispatch({type:'UPDATE_USER',payload:data})}
     
    } catch (error) {
 
-    //    const {response} = error
+    
        Update(notId,"Updating failed","error")
    }
 

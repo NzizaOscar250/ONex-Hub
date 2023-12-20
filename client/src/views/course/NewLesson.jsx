@@ -10,12 +10,10 @@ const {courseId} = useParams()
 const [data,setData]= useState({title:'',content:'',resource_link:'#',id:courseId})
 const dispatch = useDispatch()
 
-console.log(courseId)
 const handelSubmit =(e)=>{
     e.preventDefault()
    dispatch(addLessons(data,toast.info(`Adding ${data.title}....`,{toastId:'info'})))
 
-    console.log(data)
 } 
 
 const handleChange=(name)=>event=>{

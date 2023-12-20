@@ -43,6 +43,7 @@ const Course = () => {
    
    useEffect(() => {
      setCourse({...course,...myCourse})
+        
    }, [myCourse])
   
    const onShowConfirm = (data) => {
@@ -94,7 +95,6 @@ const Course = () => {
   return (
 
    <>
-
 <Dialog open={open.open}>
             <DialogTitle color="primary">{open.title}</DialogTitle>
 

@@ -10,13 +10,12 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useState} from "react"
 import {signIn} from "../actions/auth"
 import { useDispatch } from 'react-redux'
 import { fireNotify } from '../actions/notifications';
-import { useSelector } from 'react-redux';
+import { Paper } from '@mui/material';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -52,11 +51,13 @@ const navigate = useNavigate()
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Paper component="main"elevation={0}  sx={{margin:'2em auto ',width:500,paddingInline:5,paddingBlock:"3px",
+      background:'rgba(235, 235, 235, 0.25)'}}>
+       
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -100,7 +101,7 @@ const navigate = useNavigate()
               label="Remember me"
             />
             <Button
-              
+              disableElevation
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
@@ -109,14 +110,14 @@ const navigate = useNavigate()
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link to="" >
+              {/* <Grid item xs>
+                <Link to="" style={{color:'dodgerblue',paddingInline:4,fontWeight:400,textDecoration:'underline'}}>
                   Forgot password?
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
               Don&apos;t have an account? 
-                <Link to="/auth/signup" >
+                <Link to="/auth/signup" style={{color:'dodgerblue',paddingInline:4,fontWeight:400,textDecoration:'underline'}} >
                   {"Sign Up"}
                 </Link>
               </Grid>
@@ -124,7 +125,7 @@ const navigate = useNavigate()
           </form>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
+      </Paper>
     </ThemeProvider>
   );
 }
