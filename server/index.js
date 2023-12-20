@@ -10,7 +10,7 @@ import enrollRoutes from "./routes/enroll.routes.js"
 
 dotenv.config();
 export const app = express()
-
+const PORT = process.env.PORT || 8080
 // const offlineUrl = "mongodb://127.0.0.1:27017/web_classroom"
 const onlineUrl = process.env.DB 
 app.use(bodyParser.json({limit:"30mb",extended:true}))
@@ -25,7 +25,10 @@ app.use("/api/enrollment/",enrollRoutes)
 // app.use("/",(req,res)=>res.json({message:'working'}))
 
 mongoose.connect(onlineUrl).then(()=>{
-    console.log("connected to mongo db")
+  app.listen(PORT,()=>{
+   console.log("connected to mongo db") 
+  })
+    
 }).catch((e)=>console.log("error: ",e.message));
 
 
