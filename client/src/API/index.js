@@ -2,7 +2,7 @@ import axios from "axios"
 import auth from "../helper/auth.helper"
 
 const API = axios.create({
-    baseURL:'http://localhost:7000/',
+    baseURL:'https://onexhub.onrender.com/api/',
     timeout:9000,
     headers:{
         "Content-Type":'application/json'
