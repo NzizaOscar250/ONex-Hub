@@ -4,7 +4,6 @@ import {toast} from "react-toastify"
 // https://onexhub.onrender.com/api/
 const API = axios.create({
     baseURL:'https://onexhub.onrender.com/api/',
-    timeout:9000,
     headers:{
         "Content-Type":'application/json'
     }
