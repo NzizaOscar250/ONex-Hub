@@ -3,7 +3,7 @@ import auth from "../helper/auth.helper"
 import {toast} from "react-toastify"
 // https://onexhub.onrender.com/api/
 const API = axios.create({
-    baseURL:'http://localhost:7000/api',
+    baseURL:'https://onexhub.onrender.com/api/',
     timeout:9000,
     headers:{
         "Content-Type":'application/json'
