@@ -1,6 +1,5 @@
 import { toast } from "react-toastify"
 import * as  api from "../../API"
-import { jwtDecode } from 'jwt-decode';
 import { Update } from "../notifications"
 import { GET_PUBLISHED_COURSES,
             CREATE_COURSE,
@@ -17,10 +16,7 @@ import { GET_PUBLISHED_COURSES,
 
 import auth from "../../helper/auth.helper.js"
 
-let id = auth.isAuthenticated()?.token
-if (id){
-    id = jwtDecode(id)?._id
-}
+let id = auth.userInfo()
 
 export const createCourse = (formData,notId)=> async(dispatch)=>{
     try {
@@ -152,9 +148,9 @@ export const getEnrolledCourses = ()=> async(dispatch)=>{
 }
 
 //statistcs
-export const enrollStatics = (enrollId)=> async(dispatch)=>{
+export const enrollStatics = (courseId)=> async(dispatch)=>{
     try {
-        const {data} = await api.getEnrollStatics(enrollId)
+        const {data} = await api.getEnrollStatics(courseId)
 
         if(data){
             dispatch({type:COURSE_STATITICS,payload:data})
@@ -164,5 +160,18 @@ export const enrollStatics = (enrollId)=> async(dispatch)=>{
         console.log(error)
     }
 
+}
+
+// complete lesson
+
+export const completeLessons = (formData)=> async(dispatch)=>{
+    try {
+        const {data} = await api.completeLesson(formData,formData.enrollId)
+
+        console.log(data)
+
+    } catch (error) {
+        console.log(error)
+    }
 }
 

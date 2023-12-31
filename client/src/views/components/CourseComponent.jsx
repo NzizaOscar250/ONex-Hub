@@ -10,10 +10,11 @@ const CourseComponent = ({published}) => {
   const {enrollments} = useSelector((state)=>state.enrollments)
 
   const isEnrolled = (courseId)=>{
-    console.log (enrollments.find((item)=>item.course._id == courseId))
     return  enrollments.find((item)=>item.course._id == courseId)
   }
+  
 
+  
   return (
 
         <>

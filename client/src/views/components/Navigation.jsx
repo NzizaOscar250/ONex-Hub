@@ -21,6 +21,7 @@ import DrawerNav from './DrawerNav';
 import auth from "../../helper/auth.helper.js"
 import { Search } from '@mui/icons-material';
 import { blue} from '@mui/material/colors';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 240;
 let navItems = [{name:'Home',to:"/"}
@@ -29,8 +30,9 @@ let navItems = [{name:'Home',to:"/"}
 function Navigation(props) {
  
   const isAuthorized = auth.isAuthenticated()
-  const [isEducator,setIsEducator] = React.useState(JSON.parse(sessionStorage.getItem('jwt')).user.educator)
-  const [profile,setProfile]=React.useState()
+  const userInfo = props.userInfo
+
+
 let updatedNavItems = isAuthorized
     ? [...navItems]
     : [
@@ -40,23 +42,23 @@ let updatedNavItems = isAuthorized
       ];
 
 
- updatedNavItems = isEducator ? [...updatedNavItems,{name:'Teach',to:"courses",icon:<LocalLibrary sx={{fontSize:20}}/>,
+ updatedNavItems = userInfo?.educator ? [...updatedNavItems,{name:'Teach',to:"courses",icon:<LocalLibrary sx={{fontSize:20}}/>,
  styles:{display:'flex',alignItems:'center',gap:1}}] : [...updatedNavItems]
 
 
  const location = useLocation()
 
  React.useEffect(()=>{
-       setProfile(JSON.parse(sessionStorage.getItem('jwt')))
-      if (sessionStorage.getItem('jwt')) setIsEducator(JSON.parse(sessionStorage.getItem('jwt')).user.educator)
-
+      
        window.scrollTo({
         top:0,
         left:0,
         behavior: 'smooth'
        })
+
        
- },[location,])
+       
+ },[location])
 
 
  const { window: Window } = props;
@@ -156,14 +158,14 @@ let updatedNavItems = isAuthorized
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32,background:'#555' }}>
+            <Avatar sx={{ width: 32, height: 32,background:'#555' }} src={userInfo?.profile && userInfo?.profile}>
                 {
-                  profile?.user.username[0]
+                  !userInfo.profile && userInfo?.username[0]
                 }
             </Avatar>
           </IconButton>
         </Tooltip>
-               <DropMenu anchorEl={anchorEl} handleClose={handleClose} open={open} profile={profile}/> 
+               <DropMenu anchorEl={anchorEl} handleClose={handleClose} open={open} profile={userInfo}/> 
           </Box>
           
         </Toolbar>

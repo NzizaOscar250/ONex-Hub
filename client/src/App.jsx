@@ -7,8 +7,6 @@ import Auth from "./auth/Auth"
 import SignIn from "./auth/SignIn"
 import SignUp from "./auth/SignUp"
 import RootLayout from "./Layouts/RootLayout"
-import User from "./views/User/User"
-import Profile from "./views/User/Profile"
 import EditUser from "./views/User/EditUser"
 import NewCourse from "./views/course/NewCourse"
 import MyCourse from "./views/course/MyCourse"
@@ -48,10 +46,9 @@ const router = createBrowserRouter(
         <Route path="soon" element={<CommingSoon/>}/>
         <Route path="enrollement" element={<Enrollment/>}/>
         <Route path="learn/:enrollId" element={<Enrollment/>}/>
-        <Route path="profile" element={<ProtectedRoute><User/> </ProtectedRoute>}>
-              <Route index element={ <ProtectedRoute> <Profile/> </ProtectedRoute>}/>
-              <Route path="edit" element= { <ProtectedRoute> <EditUser/> </ProtectedRoute>}/>
-        </Route>
+            
+              <Route path="profile" element= { <ProtectedRoute> <EditUser/> </ProtectedRoute>}/>
+       
         <Route path="trend" element={<Courses/>}/>
 {/* courses route */}
             <Route path="courses" element={

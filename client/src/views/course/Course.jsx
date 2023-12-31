@@ -1,5 +1,5 @@
 
-import { AddBoxOutlined, AddBusiness,ArrowDownward,ArrowUpward,Delete, Edit, Save,} from "@mui/icons-material"
+import { AddBoxOutlined, AddBusiness,ArrowDownward,ArrowUpward,Delete, Edit, People, Save,VerifiedUser,} from "@mui/icons-material"
 import {  Button,Paper, Typography, CssBaseline, List, ListItem, ListItemAvatar, 
  ListItemText, Divider, Card, CardHeader, IconButton, Avatar, Dialog, 
  DialogTitle,
@@ -7,7 +7,8 @@ import {  Button,Paper, Typography, CssBaseline, List, ListItem, ListItemAvatar,
   DialogContentText,  
   ListItemSecondaryAction,
   Box,
-  CircularProgress} from "@mui/material"
+  CircularProgress,
+  Stack} from "@mui/material"
 import {map} from "lodash"
 import { Link, useNavigate, useParams} from "react-router-dom"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -15,7 +16,7 @@ import { useTheme } from "@mui/material"
 import { useState,useEffect } from "react"
 import { useSelector } from "react-redux"
 import auth from "../../helper/auth.helper.js"
-import { enrollCourse, removeCourse,updateCourse } from "../../actions/courses/"
+import { enrollCourse, enrollStatics, removeCourse,updateCourse } from "../../actions/courses/"
 import { toast } from "react-toastify"
 import { useDispatch } from "react-redux"
 
@@ -37,14 +38,15 @@ const Course = () => {
    const navigate = useNavigate()
    const [course,setCourse] = useState({name:'',resourse_url:'',description:'',category:'',published:''})
    let myCourse = useSelector((state)=> state.mycourses.find((course)=>course._id == params.courseId) || state.published.find((course)=>course._id == params.courseId) )
-    const {enrollments} = useSelector((state)=>state.enrollments)
+    const {enrollments, stats} = useSelector((state)=>state.enrollments)
 
 
    
    useEffect(() => {
-     setCourse({...course,...myCourse})
-        
-   }, [myCourse])
+     setCourse({name:'',resourse_url:'',description:'',category:'',published:'',...myCourse})
+        dispatch(enrollStatics(params.courseId))
+        console.log("cool")
+   }, [dispatch,myCourse,params])
   
    const onShowConfirm = (data) => {
   
@@ -95,6 +97,7 @@ const Course = () => {
   return (
 
    <>
+   
 <Dialog open={open.open}>
             <DialogTitle color="primary">{open.title}</DialogTitle>
 
@@ -113,18 +116,42 @@ const Course = () => {
 
    <Paper component="div" sx={{margin:'auto ',padding:4,minHeight:'100vh'}} elevation={0}>
     <CssBaseline/>
-
-
-
+ 
     <Card elevation={0} sx={{padding:0,margin:0}}>
         <CardHeader
             title={<Typography variant="h5" color="text.secondary">{course?.name}</Typography>}
             subheader={<Typography  sx={{py:1,fontSize:15}} color="primary"> { course.published ? "Published":"Added"} by <b>{course?.instructor?.username}</b></Typography>}
             action={
-                auth.isMycourse(course?.instructor?._id? course.instructor?._id : course?.instructor ) ? (<>
+                <Stack direction="row" alignItems="center" gap={2}>
+                  {
+                    course.published && <Stack direction="row" gap={3}>
+
+                            <div style={{fontSize:'14px',display:'flex',gap:5,alignItems:'center',color:'grey'}}>
+                                    <People  style={{fontSize:'20px',color:'grey'}}/>
+                                    <span> { stats?.totalEnrolled } </span>
+                                    <span>enrolled</span>
+                            </div>
+
+                            <div style={{fontSize:'14px',display:'flex',gap:5,alignItems:'center',color:'grey'}}>
+                                    <VerifiedUser  style={{fontSize:'20px',color:'grey'}}/>
+                                    <span> { stats?.totalCompleted } </span>
+                                    <span>completed</span>
+                            </div>
+                           
+                        </Stack>}
+                {
+                    auth.isMycourse(course?.instructor?._id? course.instructor?._id : course?.instructor ) ? (<>
                     <IconButton color="secondary" component={Link} to="edit"><Edit/></IconButton>
+                    <IconButton color="secondary" onClick={()=> onShowConfirm({title:'Delete Course',
+                        content1:`This will permanently delete ${course.name} from your courses`,
+                        content2:'Are you sure you want to delete course?',
+                        type:'DELETE',
+                        courseId:course._id})
+             
+                    
+                    }><Delete/></IconButton>
                     { 
-                       !course.published && <Button endIcon={<Save/>} color="secondary"
+                       !course.published && course.lessons.length != 0 ? <Button endIcon={<Save/>} color="secondary"
                                                      variant="contained" 
                                                      onClick={()=>{
                                                         onShowConfirm({title:'Publish Course',
@@ -136,19 +163,17 @@ const Course = () => {
                                                         
                                                     } 
                                                     }>Publish</Button>
+                                                    : !course.published && <Button variant="outlined" component={Link}  to="newlesson" >Add atleast one lesson to publish</Button>
+                        
+                        
+                                    
                     }
-                    <IconButton color="secondary" onClick={()=> onShowConfirm({title:'Delete Course',
-                        content1:`This will permanently delete ${course.name} from your courses`,
-                        content2:'Are you sure you want to delete course?',
-                        type:'DELETE',
-                        courseId:course._id})
-             
-                    
-                    }><Delete/></IconButton></>)
+                   </>)
 
                     : !auth.isMycourse(course?.instructor?._id) && !checkEnroll(course._id) ? <Button startIcon={<AddBusiness/>} 
                     color="primary" variant="contained" onClick={()=> handleEnroll(course._id)} >Enroll</Button> : <Button variant="outlined" component={Link} to={`/learn/${checkEnroll(course._id)._id}`}>Start Learing</Button>
-                
+               }
+               </Stack> 
             }
             />
         <ListItem sx={{alignItems:'start',display:matchs?'block':'flex'}}>

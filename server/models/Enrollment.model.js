@@ -15,6 +15,7 @@ LessonStatus:{
         type:mongoose.Schema.ObjectId,
         ref:'Lessons'
     },
+    completed:{type: Boolean,default:false}
 },
 enrolled:{
     type:Date,

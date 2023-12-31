@@ -91,19 +91,21 @@ export const complete = async(req,res)=>{
     let updatedData = {}
     updatedData['lessonStatus.$.complete'] = req.body.complete;
     updatedData.updatedAt = Date.now()
-
-    if(req.body.courseCompleted){
+    // return res.json(updatedData)
+    if(req.body.courseCompleted)
         updatedData.completed = req.body.courseCompleted;
-
+        
+        //    return res.json(updatedData)
         try {
             let enrollment = await Enrollment.updateOne({'lessonStatus._id':req.body.lessonStatus},{'$set':updatedData})
+             const red = await Enrollment.find()
             res.json(enrollment)
 
         } catch (error) {
             return res.status(400).json({error:error.message,message:'Lesson could not be completed'})
         }
-    }
-   return res.status(400).json({error:"Could not be completed"})
+    
+  
    
 }
 

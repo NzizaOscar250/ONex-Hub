@@ -1,4 +1,4 @@
-import {  CheckCircle, MenuBook, RadioButtonUnchecked } from "@mui/icons-material"
+import {  CheckCircle, MenuBook, RadioButtonUnchecked, TramRounded } from "@mui/icons-material"
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader,
      CircularProgress, CssBaseline, Divider, Drawer, Grid, List, ListItem,
      ListItemAvatar, ListItemButton, ListItemIcon, ListItemSecondaryAction,
@@ -8,7 +8,7 @@ import {map} from "lodash"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { getEnrollments } from "../../actions/courses"
+import { completeLessons, getEnrollments } from "../../actions/courses"
 import { toast } from "react-toastify"
 const Enrollment = () => {
     const [index,setIndex] = useState(0)
@@ -36,9 +36,31 @@ const Enrollment = () => {
        
    }
 
+   const handleCompletion = (id)=>{
+            const formData = {
+                complete:true,
+                enrollId:enrollId,
+                lessonId:id,
+                lessonStatus:id,
+                courseCompleted:Date.now
+            }
+            console.log(formData)
+            
+         dispatch(completeLessons( formData ))
+  
+
+
+
+   }
+
    useEffect(()=>{
     const result = learning?.course?.lessons[index]
     setSelected({...result})
+    window.scrollTo({
+        top:0,
+        left:0,
+        behavior:'smooth'
+     })
    },[index,learning?.course])
 
 
@@ -115,7 +137,8 @@ const Enrollment = () => {
                         <CardHeader title={selected?.title}
                             action={
                                 
-                                selected?.completed ? <Button variant="contained" color="secondary">Completed</Button> : <Button variant="outlined" onClick={()=>alert(selected?._id)}> Mark as complete</Button>
+                                selected?.completed ? <Button variant="contained" color="secondary">Completed</Button> :
+                                 <Button variant="outlined" onClick={()=>handleCompletion(selected?._id)}> Mark as complete</Button>
                                 
                                 
                             }

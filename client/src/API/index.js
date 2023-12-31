@@ -1,9 +1,9 @@
 import axios from "axios"
 import auth from "../helper/auth.helper"
 import {toast} from "react-toastify"
-
+// https://onexhub.onrender.com/api/
 const API = axios.create({
-    baseURL:'https://onexhub.onrender.com/api/',
+    baseURL:'http://localhost:7000/api',
     timeout:9000,
     headers:{
         "Content-Type":'application/json'
@@ -82,6 +82,9 @@ export const enrollments= (enrollId)=>API.get(`/enrollment/en/${enrollId}`)
 export const enrolledIn = ()=>API.get(`/enrollment/enrolled`)
 // statistics
 
-export const  getEnrollStatics=(courseId)=>API.get(`/enrollment/en/${courseId}`)
+//complete lesson
+export const completeLesson = (formData,enrollId,)=>API.put(`enrollment/completed/${enrollId}`,formData)
+
+export const  getEnrollStatics=(courseId)=>API.get(`/enrollment/stats/${courseId}`)
 
 

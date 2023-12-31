@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { CameraAlt, Close, Save} from "@mui/icons-material"
+import { CameraAlt, Close, Save,Edit} from "@mui/icons-material"
 import { Box, Container, CssBaseline, Stack,Grid,TextField,Avatar, Toolbar, Switch, FormControlLabel, Button, CircularProgress } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import { useEffect, useRef,useState } from 'react';
@@ -12,6 +12,7 @@ const EditUser = () => {
 
 
   const info = useSelector((state)=>state.auth.userInfo)
+  const [editing,setEditing] = useState(true)
   const fileInputRef = useRef()
   const [data,setData] = useState({
     educator:'',
@@ -80,19 +81,25 @@ useEffect(()=>{
     <Container>
       <CssBaseline/>
       <Toolbar/>
-    <Box component="form">
+    <Box component="form" sx={{mt:2}}>
 
+
+        <Box  sx={{paddingBlock:5}}>
+     
+        <Grid container spacing={2}>
+
+
+            <Grid item xs={12} md={4}>
+              
          <Box sx={{background:'#747bff'}}>
-            <Stack direction="row" rowGap={3} justifyContent="space-between" sx={{p:2,pb:8,pt:3,color:'#fff'}}>
-                <IconButton>
-                    <Close sx={{color:'#fff'}}/>
-                </IconButton>
-                <Typography variant="h6">
-                    Update Profile
+            <Stack direction="row" rowGap={3} justifyContent="space-between" alignItems="center" sx={{p:2,pb:8,pt:3,color:'#fff'}}>
+                
+                <Typography variant="h5">
+                    {editing? 'My' :'Update'} Profile
                 </Typography>
-                <IconButton>
-                      <DoneIcon sx={{color:'#fff'}}/>  
-                </IconButton>
+
+                {editing? <IconButton onClick={()=> setEditing(false)}> <Edit  sx={{color:'#fff'}}/> </IconButton>  : <IconButton onClick={()=> setEditing(true)}> <DoneIcon sx={{color:'#fff'}}/> </IconButton>}
+               
 
                 
             </Stack>
@@ -100,7 +107,7 @@ useEffect(()=>{
               <Stack direction="column" columnGap={3} justifyContent="center">
                 <input type='file' style={{display:'none'}} ref={fileInputRef} onChange={handleFileChange} />
                 {
-              data.profile ? <Avatar sx={{width:90,height:90,margin:'auto',cursor:'pointer',objectFit:'cover'}} src={data.profile}  onClick={handleHiddenInputClick}/> :
+              data.profile ? <Avatar sx={{width:100,height:100,margin:'auto',cursor:'pointer',objectFit:'cover'}} src={data.profile}  onClick={handleHiddenInputClick}/> :
                       <IconButton onClick={handleHiddenInputClick} sx={{background:'#fff',width:90,height:90,margin:'auto','&:hover':{background:'#fff'}}}>
                         <CameraAlt fontSize='large'/>
                     </IconButton>
@@ -122,15 +129,20 @@ useEffect(()=>{
                 </Stack>
 
          </Box>
+            </Grid>
 
-        <Box  sx={{paddingBlock:5}}>
-     
-        <Grid container spacing={2}>
-        <Grid item xs={12}>
+
+                  <Grid item xs={12} md={8}>
+
+                      <Grid container >
+
+                        
+        <Grid item xs={12}  sx={{py:2 }} >
                 <TextField
                   required
                   fullWidth
                   multiline
+                  disabled={editing}
                   rows={4}
                   label="About me"
                   name="about"
@@ -140,29 +152,31 @@ useEffect(()=>{
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} sx={{py:2,pr:2}}>
                 <TextField
                   required
                   fullWidth
-             
+                  disabled={editing}
                   label="First Name"
                 
                   value={data.firstname}
                   onChange={handleChange('firstname')}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} sx={{py:2}}>
                 <TextField
                   required
                   fullWidth
                   id="lastName"
+                  disabled={editing}
                   label="Last Name"
                   value={data.lastname}
                   onChange={handleChange('lastname')}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} sx={{py:2,pr:2}}>
                 <TextField
+                  disabled={editing}
                   required
                   fullWidth
                   label="Username*"
@@ -171,9 +185,10 @@ useEffect(()=>{
 
                 />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{py:2}}>
                 <TextField
                   required
+                  disabled={editing}
                   fullWidth
                   label="Email Address"
                   name="email"
@@ -182,19 +197,34 @@ useEffect(()=>{
 
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} >
                 <TextField
                   required
                   fullWidth
                   name="password"
                   label="New Password"
                   type="password"
-                  
+                  disabled={editing}
                 />
               </Grid>
-              <Grid item xs={12}>
-                  <Button variant='contained' endIcon={<Save/>} onClick={handleSubmit}>Save</Button>
-              </Grid>
+
+             { 
+                !editing && <Grid item xs={12}>
+                      <Button variant='contained' endIcon={<Save/>} onClick={handleSubmit}>Save</Button>
+                  </Grid>
+              }
+                      </Grid>
+
+                  </Grid>
+
+
+
+
+
+
+
+
+
             </Grid>
            
 
