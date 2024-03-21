@@ -22,7 +22,7 @@ app.use("/api/user/",userRoutes)
 app.use("/api/courses/",courseRoutes)
 app.use("/api/enrollment/",enrollRoutes)
 // app.use("/",(req,res)=>res.json({message:'working'}))
-mongoose.connect(offlineUrl).then(()=>{
+mongoose.connect(onlineUrl).then(()=>{
   app.listen(PORT, ()=>{
       console.log("App is listening to http://localhost:", PORT)
   })
